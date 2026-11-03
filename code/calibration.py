@@ -32,6 +32,7 @@ TAG_DEFAULTS = {
         "y_title": "FWHM (ADC channel)",
         "slope_units": "channel/ns",
         "measure": "fwhm",
+        "error_source": "sigma_error",
         "linear": False,
     },
 }
@@ -119,7 +120,10 @@ def load_config(
         calibration.setdefault(key, value)
 
     calibration.setdefault("name", "Calibration")
-    calibration.setdefault("error_source", "mean_error")
+    if "error_source" not in calibration:
+        calibration["error_source"] = (
+            "sigma_error" if calibration["measure"] == "fwhm" else "mean_error"
+        )
 
     if calibration["measure"] not in ("mean", "sigma", "fwhm"):
         raise CalibrationError(
