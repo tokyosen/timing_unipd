@@ -1,0 +1,59 @@
+{
+  "tag": "walk",
+  "name": "Time resolution (FWHM) vs delay",
+  "measure": "fwhm",
+  "error_source": "sigma_error",
+  "linear": false,
+  "x_title": "Delay (ns)",
+  "y_title": "FWHM (ADC channel)",
+  "points": [
+    {
+      "results": "/home/senzhao/Desktop/code/Ms_unipd/code/output/walk_2ns/4400walk2ns_1/results.json",
+      "config": "/home/senzhao/Desktop/code/Ms_unipd/code/config/config_walk_2ns.json",
+      "file": "/home/senzhao/Desktop/code/Ms_unipd/data_timing/lab_data/4400walk2ns_1/RAW/DataR_4400walk2ns_1.root",
+      "channel": 2,
+      "histogram": "Energy",
+      "fit": "TAC",
+      "x": 2.0,
+      "y": 137.2905217518908,
+      "y_error": 1.8818283134952467,
+      "chi2_ndf": 7.686960358047264
+    },
+    {
+      "results": "/home/senzhao/Desktop/code/Ms_unipd/code/output/walk_3ns/4400walk3ns/results.json",
+      "config": "/home/senzhao/Desktop/code/Ms_unipd/code/config/config_walk_3ns.json",
+      "file": "/home/senzhao/Desktop/code/Ms_unipd/data_timing/lab_data/4400walk3ns/RAW/DataR_4400walk3ns.root",
+      "channel": 2,
+      "histogram": "Energy",
+      "fit": "TAC",
+      "x": 3.0,
+      "y": 131.50461415820035,
+      "y_error": 1.0603496379583346,
+      "chi2_ndf": 20.087530944415573
+    },
+    {
+      "results": "/home/senzhao/Desktop/code/Ms_unipd/code/output/walk_4ns/4400walk4ns/results.json",
+      "config": "/home/senzhao/Desktop/code/Ms_unipd/code/config/config_walk_4ns.json",
+      "file": "/home/senzhao/Desktop/code/Ms_unipd/data_timing/lab_data/4400walk4ns/RAW/DataR_4400walk4ns.root",
+      "channel": 2,
+      "histogram": "Energy",
+      "fit": "TAC",
+      "x": 4.0,
+      "y": 84.83265228142999,
+      "y_error": 0.5973589938880421,
+      "chi2_ndf": 40.16254883575624
+    },
+    {
+      "results": "/home/senzhao/Desktop/code/Ms_unipd/code/output/walk_5ns/4400walk5ns_1/results.json",
+      "config": "/home/senzhao/Desktop/code/Ms_unipd/code/config/config_walk_5ns.json",
+      "file": "/home/senzhao/Desktop/code/Ms_unipd/data_timing/lab_data/4400walk5ns_1/RAW/DataR_4400walk5ns_1.root",
+      "channel": 2,
+      "histogram": "Energy",
+      "fit": "TAC",
+      "x": 5.0,
+      "y": 103.0503505582956,
+      "y_error": 2.711018771044037,
+      "chi2_ndf": 6.157951941424155
+    }
+  ]
+}

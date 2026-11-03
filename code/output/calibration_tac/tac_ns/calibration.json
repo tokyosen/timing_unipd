@@ -1,0 +1,67 @@
+{
+  "tag": "tac_ns",
+  "name": "TAC time calibration",
+  "measure": "mean",
+  "error_source": "sigma",
+  "linear": true,
+  "x_title": "Delay (ns)",
+  "y_title": "ADC channel",
+  "points": [
+    {
+      "results": "/home/senzhao/Desktop/code/Ms_unipd/code/output/tac_8ns/43TACrecall8ns/results.json",
+      "config": "/home/senzhao/Desktop/code/Ms_unipd/code/config/config_tac_8ns.json",
+      "file": "/home/senzhao/Desktop/code/Ms_unipd/data_timing/lab_data/43TACrecall8ns/RAW/DataR_43TACrecall8ns.root",
+      "channel": 2,
+      "histogram": "Energy",
+      "fit": "TAC",
+      "x": 8.0,
+      "y": 772.5607539664638,
+      "y_error": 46.155084990522774,
+      "chi2_ndf": 3.450095699312712
+    },
+    {
+      "results": "/home/senzhao/Desktop/code/Ms_unipd/code/output/tac_16ns/43TACrecall16nscorrect/results.json",
+      "config": "/home/senzhao/Desktop/code/Ms_unipd/code/config/config_tac_16ns.json",
+      "file": "/home/senzhao/Desktop/code/Ms_unipd/data_timing/lab_data/43TACrecall16nscorrect/RAW/DataR_43TACrecall16nscorrect.root",
+      "channel": 2,
+      "histogram": "Energy",
+      "fit": "TAC",
+      "x": 16.0,
+      "y": 1409.9878096899918,
+      "y_error": 48.76828412111275,
+      "chi2_ndf": 7.118186826166031
+    },
+    {
+      "results": "/home/senzhao/Desktop/code/Ms_unipd/code/output/tac_24ns/43TACrecall24nscorrect/results.json",
+      "config": "/home/senzhao/Desktop/code/Ms_unipd/code/config/config_tac_24ns.json",
+      "file": "/home/senzhao/Desktop/code/Ms_unipd/data_timing/lab_data/43TACrecall24nscorrect/RAW/DataR_43TACrecall24nscorrect.root",
+      "channel": 2,
+      "histogram": "Energy",
+      "fit": "TAC",
+      "x": 24.0,
+      "y": 2063.65481490083,
+      "y_error": 42.697072809744846,
+      "chi2_ndf": 7.068094754927559
+    },
+    {
+      "results": "/home/senzhao/Desktop/code/Ms_unipd/code/output/tac_30ns/43TACrecall30nscorrect/results.json",
+      "config": "/home/senzhao/Desktop/code/Ms_unipd/code/config/config_tac_30ns.json",
+      "file": "/home/senzhao/Desktop/code/Ms_unipd/data_timing/lab_data/43TACrecall30nscorrect/RAW/DataR_43TACrecall30nscorrect.root",
+      "channel": 2,
+      "histogram": "Energy",
+      "fit": "TAC",
+      "x": 30.0,
+      "y": 2563.634660222004,
+      "y_error": 42.677215455405815,
+      "chi2_ndf": 1.7617273625971175
+    }
+  ],
+  "slope": 81.41496299743162,
+  "slope_error": 2.6925339505785626,
+  "slope_units": "channel/ns",
+  "intercept": 115.10020429211238,
+  "intercept_error": 58.79835389999514,
+  "chi2": 0.07932277062897856,
+  "ndf": 2,
+  "chi2_ndf": 0.03966138531448928
+}

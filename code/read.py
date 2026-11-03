@@ -14,7 +14,7 @@ except ImportError as exc:
     raise SystemExit(
         "PyROOT is not available for this Python interpreter.\n"
         "Run the script with a ROOT-enabled Python, for example:\n"
-        "  ~/miniforge3/envs/rootenv/bin/python read.py --config config.json"
+        "  ~/miniforge3/envs/rootenv/bin/python read.py --config config/config.json"
     ) from exc
 
 import numpy as np
@@ -33,6 +33,9 @@ class ReaderError(RuntimeError):
 
 class OutputError(RuntimeError):
     pass
+
+
+OUTPUT_ROOT = Path(__file__).resolve().parent / "output"
 
 
 def load_config(path: str | Path) -> tuple[dict[str, Any], Path]:
@@ -68,7 +71,7 @@ def load_config(path: str | Path) -> tuple[dict[str, Any], Path]:
         output_path = output_config
         save_root = config.get("save_root", True)
 
-    config["output"] = _resolve(output_path, base)
+    config["output"] = _output_path(output_path)
     config["save_root"] = save_root
 
     plot_config = config.setdefault("plot", {})
@@ -173,6 +176,13 @@ def load_config(path: str | Path) -> tuple[dict[str, Any], Path]:
                     )
 
     return config, config_path
+
+
+def _output_path(value: Any) -> Path:
+    path = Path(str(value)).expanduser()
+    if path.is_absolute():
+        raise ConfigError('"output.path" must be relative to the output folder.')
+    return (OUTPUT_ROOT / path).resolve()
 
 
 def _resolve(value: Any, base: Path) -> Path:
@@ -479,7 +489,15 @@ def output_directory(
     config: dict[str, Any],
     override: Path | None,
 ) -> Path:
-    root = override if override is not None else config["output"]
+    if override is None:
+        root = config["output"]
+    else:
+        path = Path(override).expanduser()
+        if path.is_absolute():
+            raise OutputError(
+                "--output must be relative to the output folder."
+            )
+        root = (OUTPUT_ROOT / path).resolve()
     return root / input_label(config)
 
 
@@ -639,7 +657,7 @@ def parse_args(argv: list[str] | None) -> argparse.Namespace:
         "-c",
         "--config",
         type=Path,
-        default=Path(__file__).with_name("config.json"),
+        default=Path(__file__).parent / "config" / "config.json",
     )
     parser.add_argument(
         "-o",
@@ -658,7 +676,7 @@ def main(argv: list[str] | None = None) -> int:
     try:
         config, config_path = load_config(args.config)
         files = find_input_files(config["input"])
-        override = args.output.expanduser().resolve() if args.output else None
+        override = args.output.expanduser() if args.output else None
         output = output_directory(config, override)
         prepare_output(output)
 

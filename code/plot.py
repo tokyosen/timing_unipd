@@ -106,10 +106,7 @@ def _legend(fits: list[FitResult]) -> ROOT.TLegend:
                 f"#pm {mean.error:.2f}"
             )
         else:
-            text = (
-                f"{fit.config['name']}: #chi^{{2}}/ndf = "
-                f"{fit.chi2:.2f}/{fit.ndf}"
-            )
+            text = f"{fit.config['name']}"
         legend.AddEntry(fit.fit, text, "l" if fit.valid else "")
         if _has_sigma_line(fit):
             legend.AddEntry(

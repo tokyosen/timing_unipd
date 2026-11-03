@@ -1,0 +1,89 @@
+{
+  "output": {
+    "path": "calibration_tac",
+    "save_root": true
+  },
+  "plot": {
+    "enabled": true,
+    "width": 1600,
+    "height": 1000
+  },
+  "calibration": {
+    "tag": "tac_ns",
+    "name": "TAC time calibration",
+    "tac_ns": {
+      "x_title": "Delay (ns)",
+      "y_title": "ADC channel",
+      "slope_units": "channel/ns",
+      "measure": "mean",
+      "linear": true,
+      "points": [
+        {
+          "config": "config_tac_8ns.json",
+          "channel": 2,
+          "fit": "TAC",
+          "value": 8.0
+        },
+        {
+          "config": "config_tac_16ns.json",
+          "channel": 2,
+          "fit": "TAC",
+          "value": 16.0
+        },
+        {
+          "config": "config_tac_24ns.json",
+          "channel": 2,
+          "fit": "TAC",
+          "value": 24.0
+        },
+        {
+          "config": "config_tac_30ns.json",
+          "channel": 2,
+          "fit": "TAC",
+          "value": 30.0
+        }
+      ],
+      "error_source": "sigma"
+    },
+    "tac_cm": {
+      "x_title": "Cable length (cm)",
+      "y_title": "ADC channel",
+      "slope_units": "channel/cm",
+      "measure": "mean",
+      "linear": true,
+      "points": [
+        {
+          "config": "config_tac_80cm.json",
+          "channel": 2,
+          "fit": "TAC",
+          "value": 80.0
+        },
+        {
+          "config": "config_tac_100cm.json",
+          "channel": 2,
+          "fit": "TAC",
+          "value": 100.0
+        },
+        {
+          "config": "config_tac_120cm.json",
+          "channel": 2,
+          "fit": "TAC",
+          "value": 120.0
+        },
+        {
+          "config": "config_tac_180cm.json",
+          "channel": 2,
+          "fit": "TAC",
+          "value": 180.0
+        },
+        {
+          "config": "config_tac_240cm.json",
+          "channel": 2,
+          "fit": "TAC",
+          "value": 240.0
+        }
+      ],
+      "error_source": "sigma"
+    }
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "tag": "tac_cm",
+  "name": "TAC time calibration",
+  "measure": "mean",
+  "error_source": "sigma",
+  "linear": true,
+  "x_title": "Cable length (cm)",
+  "y_title": "ADC channel",
+  "points": [
+    {
+      "results": "/home/senzhao/Desktop/code/Ms_unipd/code/output/tac_80cm/43calibcable80cmcorrect_1/results.json",
+      "config": "/home/senzhao/Desktop/code/Ms_unipd/code/config/config_tac_80cm.json",
+      "file": "/home/senzhao/Desktop/code/Ms_unipd/data_timing/lab_data/43calibcable80cmcorrect_1/RAW/DataR_43calibcable80cmcorrect_1.root",
+      "channel": 2,
+      "histogram": "Energy",
+      "fit": "TAC",
+      "x": 80.0,
+      "y": 259.2132046656594,
+      "y_error": 49.22763389901105,
+      "chi2_ndf": 2.6113989652863423
+    },
+    {
+      "results": "/home/senzhao/Desktop/code/Ms_unipd/code/output/tac_100cm/43calibcable100cmcorrect/results.json",
+      "config": "/home/senzhao/Desktop/code/Ms_unipd/code/config/config_tac_100cm.json",
+      "file": "/home/senzhao/Desktop/code/Ms_unipd/data_timing/lab_data/43calibcable100cmcorrect/RAW/DataR_43calibcable100cmcorrect.root",
+      "channel": 2,
+      "histogram": "Energy",
+      "fit": "TAC",
+      "x": 100.0,
+      "y": 339.8862245433269,
+      "y_error": 37.82387053868688,
+      "chi2_ndf": 31.00545907667803
+    },
+    {
+      "results": "/home/senzhao/Desktop/code/Ms_unipd/code/output/tac_120cm/43calibcable120cmcorrect/results.json",
+      "config": "/home/senzhao/Desktop/code/Ms_unipd/code/config/config_tac_120cm.json",
+      "file": "/home/senzhao/Desktop/code/Ms_unipd/data_timing/lab_data/43calibcable120cmcorrect/RAW/DataR_43calibcable120cmcorrect.root",
+      "channel": 2,
+      "histogram": "Energy",
+      "fit": "TAC",
+      "x": 120.0,
+      "y": 354.7530350432858,
+      "y_error": 48.80717092940157,
+      "chi2_ndf": 12.155494547776737
+    },
+    {
+      "results": "/home/senzhao/Desktop/code/Ms_unipd/code/output/tac_180cm/43calibcable180cmcorrect/results.json",
+      "config": "/home/senzhao/Desktop/code/Ms_unipd/code/config/config_tac_180cm.json",
+      "file": "/home/senzhao/Desktop/code/Ms_unipd/data_timing/lab_data/43calibcable180cmcorrect/RAW/DataR_43calibcable180cmcorrect.root",
+      "channel": 2,
+      "histogram": "Energy",
+      "fit": "TAC",
+      "x": 180.0,
+      "y": 606.5940961123217,
+      "y_error": 49.44769926355526,
+      "chi2_ndf": 8.88958826049989
+    },
+    {
+      "results": "/home/senzhao/Desktop/code/Ms_unipd/code/output/tac_240cm/43calibcable240cmcorrect/results.json",
+      "config": "/home/senzhao/Desktop/code/Ms_unipd/code/config/config_tac_240cm.json",
+      "file": "/home/senzhao/Desktop/code/Ms_unipd/data_timing/lab_data/43calibcable240cmcorrect/RAW/DataR_43calibcable240cmcorrect.root",
+      "channel": 2,
+      "histogram": "Energy",
+      "fit": "TAC",
+      "x": 240.0,
+      "y": 861.9418260171788,
+      "y_error": 41.33279001070983,
+      "chi2_ndf": 13.399553095946759
+    }
+  ],
+  "slope": 3.7676557832446327,
+  "slope_error": 0.32961023361325914,
+  "slope_units": "channel/cm",
+  "intercept": -54.676352934208175,
+  "intercept_error": 51.908718816667054,
+  "chi2": 1.257288102626165,
+  "ndf": 3,
+  "chi2_ndf": 0.4190960342087217
+}
