@@ -1,0 +1,4 @@
+input_file,channel,histogram,expression,fit_name,function,range_min,range_max,valid,status,chi2,ndf,chi2_ndf,p_value,parameter_index,parameter_name,parameter_value,parameter_error
+/home/senzhao/Desktop/code/Ms_unipd/data_timing/lab_data/4400walk5ns_1/RAW/DataR_4400walk5ns_1.root,2,Energy,Energy,TAC,gaus,1450.0,1560.0,True,0,135.4749427113314,22,6.157951941424155,2.5040136403202685e-18,0,Constant,403.0872222131687,6.374510438216486
+/home/senzhao/Desktop/code/Ms_unipd/data_timing/lab_data/4400walk5ns_1/RAW/DataR_4400walk5ns_1.root,2,Energy,Energy,TAC,gaus,1450.0,1560.0,True,0,135.4749427113314,22,6.157951941424155,2.5040136403202685e-18,1,mean,1501.6688216923053,0.7863036287667114
+/home/senzhao/Desktop/code/Ms_unipd/data_timing/lab_data/4400walk5ns_1/RAW/DataR_4400walk5ns_1.root,2,Energy,Energy,TAC,gaus,1450.0,1560.0,True,0,135.4749427113314,22,6.157951941424155,2.5040136403202685e-18,2,sigma,43.761454628241545,1.1512636716188673

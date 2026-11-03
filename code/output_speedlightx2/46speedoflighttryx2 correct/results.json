@@ -1,0 +1,100 @@
+{
+  "generated": "2026-11-03T19:51:21+00:00",
+  "config_file": "/home/senzhao/Desktop/code/Ms_unipd/code/config_speedlightx2.json",
+  "input": {
+    "path": "/home/senzhao/Desktop/code/Ms_unipd/data_timing/lab_data/46speedoflighttryx2 correct",
+    "pattern": "RAW/DataR_*.root",
+    "tree": "Data_R"
+  },
+  "output": "/home/senzhao/Desktop/code/Ms_unipd/code/output_speedlightx2/46speedoflighttryx2 correct",
+  "files": [
+    {
+      "input_file": "/home/senzhao/Desktop/code/Ms_unipd/data_timing/lab_data/46speedoflighttryx2 correct/RAW/DataR_46speedoflighttryx2 correct.root",
+      "channels": [
+        {
+          "channel": 0,
+          "histograms": [
+            {
+              "name": "Energy",
+              "expression": "Energy",
+              "bins": 800,
+              "range": [
+                11.0,
+                4125.0
+              ],
+              "entries": 3219,
+              "fits": []
+            }
+          ]
+        },
+        {
+          "channel": 1,
+          "histograms": [
+            {
+              "name": "Energy",
+              "expression": "Energy",
+              "bins": 800,
+              "range": [
+                44.0,
+                6142.5
+              ],
+              "entries": 3219,
+              "fits": []
+            }
+          ]
+        },
+        {
+          "channel": 2,
+          "histograms": [
+            {
+              "name": "Energy",
+              "expression": "Energy",
+              "bins": 800,
+              "range": [
+                0.0,
+                5866.5
+              ],
+              "entries": 3219,
+              "fits": [
+                {
+                  "name": "TAC",
+                  "function": "gaus",
+                  "range": [
+                    2600.0,
+                    2750.0
+                  ],
+                  "valid": true,
+                  "status": 0,
+                  "chi2": 25.960598463970708,
+                  "ndf": 17,
+                  "chi2_ndf": 1.5270940272923945,
+                  "p_value": 0.07518138267515923,
+                  "parameters": [
+                    {
+                      "index": 0,
+                      "name": "Constant",
+                      "value": 143.54231934614174,
+                      "error": 4.312671000368623
+                    },
+                    {
+                      "index": 1,
+                      "name": "mean",
+                      "value": 2660.819561922647,
+                      "error": 1.645893832429997
+                    },
+                    {
+                      "index": 2,
+                      "name": "sigma",
+                      "value": 47.46582752389375,
+                      "error": 1.8099708731255468
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "input": {
+    "path": "../data_timing/lab_data/4400walk2ns_1",
+    "pattern": "RAW/DataR_*.root",
+    "tree": "Data_R"
+  },
+  "output": {
+    "path": "output_walk_2ns",
+    "save_root": true
+  },
+  "plot": {
+    "enabled": true,
+    "width": 1600,
+    "height": 1000,
+    "log_y": false
+  },
+  "histograms": [
+    {
+      "name": "Energy",
+      "expression": "Energy",
+      "bins": 800,
+      "x_range": [500,2000],
+      "title": "Sigma measurement with 2 ns",
+      "x_title": "ADC channel",
+      "y_title": "Entries",
+      "fits": [
+        {
+          "name": "TAC",
+          "function": "gaus",
+          "range": [1150,1350],
+          "channels": [2],
+          "parameters": [
+            { "index": 1, "name": "mean" },
+            { "index": 2, "name": "sigma" }
+          ]
+        }
+      ]
+    }
+  ]
+}

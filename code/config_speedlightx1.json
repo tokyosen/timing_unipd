@@ -1,0 +1,40 @@
+{
+  "input": {
+    "path": "../data_timing/lab_data/46speedoflighttry",
+    "pattern": "RAW/DataR_*.root",
+    "tree": "Data_R"
+  },
+  "output": {
+    "path": "output_speedlightx1",
+    "save_root": true
+  },
+  "plot": {
+    "enabled": true,
+    "width": 1600,
+    "height": 1000,
+    "log_y": false
+  },
+  "histograms": [
+    {
+      "name": "Energy",
+      "expression": "Energy",
+      "bins": 800,
+      "x_range": [2200,4200],
+      "title": "Speed of light measurement with X1",
+      "x_title": "ADC channel",
+      "y_title": "Entries",
+      "fits": [
+        {
+          "name": "TAC",
+          "function": "gaus",
+          "range": [2950,3100],
+          "channels": [2],
+          "parameters": [
+            { "index": 1, "name": "mean" },
+            { "index": 2, "name": "sigma" }
+          ]
+        }
+      ]
+    }
+  ]
+}

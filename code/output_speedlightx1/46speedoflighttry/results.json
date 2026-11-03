@@ -1,0 +1,100 @@
+{
+  "generated": "2026-11-03T19:46:43+00:00",
+  "config_file": "/home/senzhao/Desktop/code/Ms_unipd/code/config_speedlightx1.json",
+  "input": {
+    "path": "/home/senzhao/Desktop/code/Ms_unipd/data_timing/lab_data/46speedoflighttry",
+    "pattern": "RAW/DataR_*.root",
+    "tree": "Data_R"
+  },
+  "output": "/home/senzhao/Desktop/code/Ms_unipd/code/output_speedlightx1/46speedoflighttry",
+  "files": [
+    {
+      "input_file": "/home/senzhao/Desktop/code/Ms_unipd/data_timing/lab_data/46speedoflighttry/RAW/DataR_46speedoflighttry.root",
+      "channels": [
+        {
+          "channel": 0,
+          "histograms": [
+            {
+              "name": "Energy",
+              "expression": "Energy",
+              "bins": 800,
+              "range": [
+                0.0,
+                4650.0
+              ],
+              "entries": 3552,
+              "fits": []
+            }
+          ]
+        },
+        {
+          "channel": 1,
+          "histograms": [
+            {
+              "name": "Energy",
+              "expression": "Energy",
+              "bins": 800,
+              "range": [
+                37.0,
+                6142.5
+              ],
+              "entries": 3552,
+              "fits": []
+            }
+          ]
+        },
+        {
+          "channel": 2,
+          "histograms": [
+            {
+              "name": "Energy",
+              "expression": "Energy",
+              "bins": 800,
+              "range": [
+                0.0,
+                6133.5
+              ],
+              "entries": 3552,
+              "fits": [
+                {
+                  "name": "TAC",
+                  "function": "gaus",
+                  "range": [
+                    2950.0,
+                    3100.0
+                  ],
+                  "valid": true,
+                  "status": 0,
+                  "chi2": 45.01313102197427,
+                  "ndf": 16,
+                  "chi2_ndf": 2.8133206888733917,
+                  "p_value": 0.00013815050768559294,
+                  "parameters": [
+                    {
+                      "index": 0,
+                      "name": "Constant",
+                      "value": 164.37408543220278,
+                      "error": 4.960570565043695
+                    },
+                    {
+                      "index": 1,
+                      "name": "mean",
+                      "value": 3032.933493819394,
+                      "error": 1.4241809308540947
+                    },
+                    {
+                      "index": 2,
+                      "name": "sigma",
+                      "value": 49.15252004811278,
+                      "error": 1.9738707932594437
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

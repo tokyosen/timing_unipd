@@ -1,0 +1,65 @@
+{
+  "generated": "2026-11-03T20:09:26+00:00",
+  "config_file": "/home/senzhao/Desktop/code/Ms_unipd/code/config_walk_5ns.json",
+  "input": {
+    "path": "/home/senzhao/Desktop/code/Ms_unipd/data_timing/lab_data/4400walk5ns",
+    "pattern": "RAW/DataR_*.root",
+    "tree": "Data_R"
+  },
+  "output": "/home/senzhao/Desktop/code/Ms_unipd/code/output_walk_5ns/4400walk5ns",
+  "files": [
+    {
+      "input_file": "/home/senzhao/Desktop/code/Ms_unipd/data_timing/lab_data/4400walk5ns/RAW/DataR_4400walk5ns.root",
+      "channels": [
+        {
+          "channel": 0,
+          "histograms": [
+            {
+              "name": "Energy",
+              "expression": "Energy",
+              "bins": 800,
+              "range": [
+                0.0,
+                2190.0
+              ],
+              "entries": 1221,
+              "fits": []
+            }
+          ]
+        },
+        {
+          "channel": 1,
+          "histograms": [
+            {
+              "name": "Energy",
+              "expression": "Energy",
+              "bins": 800,
+              "range": [
+                45.0,
+                3306.0
+              ],
+              "entries": 1221,
+              "fits": []
+            }
+          ]
+        },
+        {
+          "channel": 2,
+          "histograms": [
+            {
+              "name": "Energy",
+              "expression": "Energy",
+              "bins": 800,
+              "range": [
+                0.0,
+                2190.0
+              ],
+              "entries": 1221,
+              "fits": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

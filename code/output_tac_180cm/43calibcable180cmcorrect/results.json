@@ -1,0 +1,100 @@
+{
+  "generated": "2026-11-03T19:37:16+00:00",
+  "config_file": "/home/senzhao/Desktop/code/Ms_unipd/code/config_tac_180cm.json",
+  "input": {
+    "path": "/home/senzhao/Desktop/code/Ms_unipd/data_timing/lab_data/43calibcable180cmcorrect",
+    "pattern": "RAW/DataR_*.root",
+    "tree": "Data_R"
+  },
+  "output": "/home/senzhao/Desktop/code/Ms_unipd/code/output_tac_180cm/43calibcable180cmcorrect",
+  "files": [
+    {
+      "input_file": "/home/senzhao/Desktop/code/Ms_unipd/data_timing/lab_data/43calibcable180cmcorrect/RAW/DataR_43calibcable180cmcorrect.root",
+      "channels": [
+        {
+          "channel": 0,
+          "histograms": [
+            {
+              "name": "Energy",
+              "expression": "Energy",
+              "bins": 800,
+              "range": [
+                0.0,
+                3634.5
+              ],
+              "entries": 11322,
+              "fits": []
+            }
+          ]
+        },
+        {
+          "channel": 1,
+          "histograms": [
+            {
+              "name": "Energy",
+              "expression": "Energy",
+              "bins": 800,
+              "range": [
+                0.0,
+                3562.5
+              ],
+              "entries": 11322,
+              "fits": []
+            }
+          ]
+        },
+        {
+          "channel": 2,
+          "histograms": [
+            {
+              "name": "Energy",
+              "expression": "Energy",
+              "bins": 800,
+              "range": [
+                0.0,
+                5734.5
+              ],
+              "entries": 11322,
+              "fits": [
+                {
+                  "name": "TAC",
+                  "function": "gaus",
+                  "range": [
+                    530.0,
+                    680.0
+                  ],
+                  "valid": true,
+                  "status": 0,
+                  "chi2": 160.01258868899802,
+                  "ndf": 18,
+                  "chi2_ndf": 8.88958826049989,
+                  "p_value": 8.284844919799455e-25,
+                  "parameters": [
+                    {
+                      "index": 0,
+                      "name": "Constant",
+                      "value": 523.8262731137918,
+                      "error": 8.018292618505738
+                    },
+                    {
+                      "index": 1,
+                      "name": "mean",
+                      "value": 606.5940961123217,
+                      "error": 0.7731746950265829
+                    },
+                    {
+                      "index": 2,
+                      "name": "sigma",
+                      "value": 49.44769926355526,
+                      "error": 0.9255793268107908
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

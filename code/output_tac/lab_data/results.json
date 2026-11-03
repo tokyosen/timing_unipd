@@ -1,0 +1,456 @@
+{
+  "generated": "2026-11-03T18:24:22+00:00",
+  "config_file": "/home/senzhao/Desktop/code/Ms_unipd/code/config_tac.json",
+  "input": {
+    "path": "/home/senzhao/Desktop/code/Ms_unipd/data_timing/lab_data",
+    "pattern": "43TACrecall*/RAW/DataR_*.root",
+    "tree": "Data_R"
+  },
+  "output": "/home/senzhao/Desktop/code/Ms_unipd/code/output_tac/lab_data",
+  "chi2_ndf_range": [
+    0.0,
+    10.0
+  ],
+  "files": [
+    {
+      "input_file": "/home/senzhao/Desktop/code/Ms_unipd/data_timing/lab_data/43TACrecall16ns/RAW/DataR_43TACrecall16ns.root",
+      "channels": [
+        {
+          "channel": 0,
+          "histograms": [
+            {
+              "name": "Energy",
+              "expression": "Energy",
+              "bins": 1300,
+              "range": [
+                0.0,
+                397.5
+              ],
+              "entries": 2942,
+              "fits": []
+            }
+          ]
+        },
+        {
+          "channel": 1,
+          "histograms": [
+            {
+              "name": "Energy",
+              "expression": "Energy",
+              "bins": 1300,
+              "range": [
+                0.0,
+                2176.5
+              ],
+              "entries": 2958,
+              "fits": []
+            }
+          ]
+        },
+        {
+          "channel": 2,
+          "histograms": [
+            {
+              "name": "Energy",
+              "expression": "Energy",
+              "bins": 1300,
+              "range": [
+                0.0,
+                2586.0
+              ],
+              "entries": 2981,
+              "fits": [
+                {
+                  "name": "TAC",
+                  "function": "gaus",
+                  "range": [
+                    0.0,
+                    2586.0
+                  ],
+                  "valid": true,
+                  "status": 0,
+                  "chi2": 525.3918037549848,
+                  "ndf": 280,
+                  "chi2_ndf": 1.8763992991249459,
+                  "p_value": 3.605305073294319e-17,
+                  "parameters": [
+                    {
+                      "index": 0,
+                      "name": "Constant",
+                      "value": 27.54970962422661,
+                      "error": 0.884008690682491
+                    },
+                    {
+                      "index": 1,
+                      "name": "mean",
+                      "value": 1407.1720266925217,
+                      "error": 1.450787529252535
+                    },
+                    {
+                      "index": 2,
+                      "name": "sigma",
+                      "value": 70.83997540811711,
+                      "error": 1.7850163388988278
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "input_file": "/home/senzhao/Desktop/code/Ms_unipd/data_timing/lab_data/43TACrecall16nscorrect/RAW/DataR_43TACrecall16nscorrect.root",
+      "channels": [
+        {
+          "channel": 0,
+          "histograms": [
+            {
+              "name": "Energy",
+              "expression": "Energy",
+              "bins": 1300,
+              "range": [
+                0.0,
+                402.0
+              ],
+              "entries": 10014,
+              "fits": []
+            }
+          ]
+        },
+        {
+          "channel": 1,
+          "histograms": [
+            {
+              "name": "Energy",
+              "expression": "Energy",
+              "bins": 1300,
+              "range": [
+                0.0,
+                2233.5
+              ],
+              "entries": 10086,
+              "fits": []
+            }
+          ]
+        },
+        {
+          "channel": 2,
+          "histograms": [
+            {
+              "name": "Energy",
+              "expression": "Energy",
+              "bins": 1300,
+              "range": [
+                0.0,
+                2580.0
+              ],
+              "entries": 10155,
+              "fits": [
+                {
+                  "name": "TAC",
+                  "function": "gaus",
+                  "range": [
+                    0.0,
+                    2580.0
+                  ],
+                  "valid": true,
+                  "status": 0,
+                  "chi2": 1344.0779000666084,
+                  "ndf": 335,
+                  "chi2_ndf": 4.012172836019727,
+                  "p_value": 9.042157684392483e-121,
+                  "parameters": [
+                    {
+                      "index": 0,
+                      "name": "Constant",
+                      "value": 90.94022920209638,
+                      "error": 1.581751160042921
+                    },
+                    {
+                      "index": 1,
+                      "name": "mean",
+                      "value": 1403.8315661695942,
+                      "error": 0.8327292908019315
+                    },
+                    {
+                      "index": 2,
+                      "name": "sigma",
+                      "value": 76.72278038047283,
+                      "error": 1.0563824311671013
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "input_file": "/home/senzhao/Desktop/code/Ms_unipd/data_timing/lab_data/43TACrecall24nscorrect/RAW/DataR_43TACrecall24nscorrect.root",
+      "channels": [
+        {
+          "channel": 0,
+          "histograms": [
+            {
+              "name": "Energy",
+              "expression": "Energy",
+              "bins": 1300,
+              "range": [
+                0.0,
+                405.0
+              ],
+              "entries": 10662,
+              "fits": []
+            }
+          ]
+        },
+        {
+          "channel": 1,
+          "histograms": [
+            {
+              "name": "Energy",
+              "expression": "Energy",
+              "bins": 1300,
+              "range": [
+                0.0,
+                2206.5
+              ],
+              "entries": 10757,
+              "fits": []
+            }
+          ]
+        },
+        {
+          "channel": 2,
+          "histograms": [
+            {
+              "name": "Energy",
+              "expression": "Energy",
+              "bins": 1300,
+              "range": [
+                0.0,
+                3543.0
+              ],
+              "entries": 10813,
+              "fits": [
+                {
+                  "name": "TAC",
+                  "function": "gaus",
+                  "range": [
+                    0.0,
+                    3543.0
+                  ],
+                  "valid": true,
+                  "status": 0,
+                  "chi2": 1622.9604921147293,
+                  "ndf": 255,
+                  "chi2_ndf": 6.3645509494695265,
+                  "p_value": 1.7747220440571834e-197,
+                  "parameters": [
+                    {
+                      "index": 0,
+                      "name": "Constant",
+                      "value": 126.86239795069227,
+                      "error": 2.239598530891205
+                    },
+                    {
+                      "index": 1,
+                      "name": "mean",
+                      "value": 2054.380113940214,
+                      "error": 0.8407185325521027
+                    },
+                    {
+                      "index": 2,
+                      "name": "sigma",
+                      "value": 78.76916183462994,
+                      "error": 1.1226325178320948
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "input_file": "/home/senzhao/Desktop/code/Ms_unipd/data_timing/lab_data/43TACrecall30nscorrect/RAW/DataR_43TACrecall30nscorrect.root",
+      "channels": [
+        {
+          "channel": 0,
+          "histograms": [
+            {
+              "name": "Energy",
+              "expression": "Energy",
+              "bins": 1300,
+              "range": [
+                0.0,
+                406.5
+              ],
+              "entries": 10008,
+              "fits": []
+            }
+          ]
+        },
+        {
+          "channel": 1,
+          "histograms": [
+            {
+              "name": "Energy",
+              "expression": "Energy",
+              "bins": 1300,
+              "range": [
+                0.0,
+                2232.0
+              ],
+              "entries": 10096,
+              "fits": []
+            }
+          ]
+        },
+        {
+          "channel": 2,
+          "histograms": [
+            {
+              "name": "Energy",
+              "expression": "Energy",
+              "bins": 1300,
+              "range": [
+                0.0,
+                4303.5
+              ],
+              "entries": 10152,
+              "fits": [
+                {
+                  "name": "TAC",
+                  "function": "gaus",
+                  "range": [
+                    0.0,
+                    4303.5
+                  ],
+                  "valid": true,
+                  "status": 0,
+                  "chi2": 1270.745872454898,
+                  "ndf": 218,
+                  "chi2_ndf": 5.829109506673844,
+                  "p_value": 5.581941918359011e-148,
+                  "parameters": [
+                    {
+                      "index": 0,
+                      "name": "Constant",
+                      "value": 152.48442808136411,
+                      "error": 2.6056411605083563
+                    },
+                    {
+                      "index": 1,
+                      "name": "mean",
+                      "value": 2554.7136471786425,
+                      "error": 0.8367437770391304
+                    },
+                    {
+                      "index": 2,
+                      "name": "sigma",
+                      "value": 76.92401381678272,
+                      "error": 1.030805184038087
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "input_file": "/home/senzhao/Desktop/code/Ms_unipd/data_timing/lab_data/43TACrecall8ns/RAW/DataR_43TACrecall8ns.root",
+      "channels": [
+        {
+          "channel": 0,
+          "histograms": [
+            {
+              "name": "Energy",
+              "expression": "Energy",
+              "bins": 1300,
+              "range": [
+                0.0,
+                405.0
+              ],
+              "entries": 10039,
+              "fits": []
+            }
+          ]
+        },
+        {
+          "channel": 1,
+          "histograms": [
+            {
+              "name": "Energy",
+              "expression": "Energy",
+              "bins": 1300,
+              "range": [
+                0.0,
+                2227.5
+              ],
+              "entries": 10088,
+              "fits": []
+            }
+          ]
+        },
+        {
+          "channel": 2,
+          "histograms": [
+            {
+              "name": "Energy",
+              "expression": "Energy",
+              "bins": 1300,
+              "range": [
+                0.0,
+                1624.5
+              ],
+              "entries": 10164,
+              "fits": [
+                {
+                  "name": "TAC",
+                  "function": "gaus",
+                  "range": [
+                    0.0,
+                    1624.5
+                  ],
+                  "valid": true,
+                  "status": 0,
+                  "chi2": 2049.9559031260164,
+                  "ndf": 513,
+                  "chi2_ndf": 3.996015405703736,
+                  "p_value": 3.0942891541665737e-182,
+                  "parameters": [
+                    {
+                      "index": 0,
+                      "name": "Constant",
+                      "value": 52.98438687197386,
+                      "error": 0.9744913153726766
+                    },
+                    {
+                      "index": 1,
+                      "name": "mean",
+                      "value": 761.2528037626867,
+                      "error": 0.8870567856686269
+                    },
+                    {
+                      "index": 2,
+                      "name": "sigma",
+                      "value": 76.38654779810749,
+                      "error": 1.124867295646105
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

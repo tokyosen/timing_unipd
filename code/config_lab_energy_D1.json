@@ -1,0 +1,71 @@
+{
+  "input": {
+    "path": "../data_timing/lab_data/42energyday2D1",
+    "pattern": "RAW/DataR_*.root",
+    "tree": "Data_R"
+  },
+  "output": {
+    "path": "output_energy_calibration_D1",
+    "save_root": true
+  },
+  "plot": {
+    "enabled": true,
+    "width": 1600,
+    "height": 1000,
+    "log_y": false
+  },
+  "histograms": [
+    {
+      "name": "Energy",
+      "expression": "Energy",
+      "bins": 1200,
+      "range": "auto",
+      "x_range": [0, 600],
+      "title": "Energy Calibration of Detector 1",
+      "x_title": "ADC channel",
+      "y_title": "Entries",
+      "fits": [
+        {
+          "name": "511 keV",
+          "function": "gaus",
+          "range": [65, 130],
+          "parameters": [
+            { "index": 1, "name": "mean", "init": 90, "limits": [60, 120] },
+            { "index": 2, "name": "sigma", "init": 30, "limits": [1, 200] }
+          ]
+        },
+        {
+          "name": "1275 keV",
+          "function": "gaus",
+          "range": [300, 400],
+          "parameters": [
+            { "index": 1, "name": "mean", "init": 300, "limits": [220, 400] },
+            { "index": 2, "name": "sigma", "init": 50, "limits": [1, 500] }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "EnergyShort",
+      "expression": "EnergyShort",
+      "bins": 1300,
+      "range": "auto",
+      "x_range": "auto",
+      "title": "Energy Calibration of Detector 1",
+      "x_title": "ADC channel",
+      "y_title": "Entries",
+      "fits": []
+    },
+    {
+      "name": "Difference",
+      "expression": "Energy - EnergyShort",
+      "bins": 1300,
+      "range": "auto",
+      "x_range": "auto",
+      "title": "Energy Calibration of Detector 1",
+      "x_title": "ADC channel difference",
+      "y_title": "Entries",
+      "fits": []
+    }
+  ]
+}

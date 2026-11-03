@@ -1,0 +1,4 @@
+data_timing/lab_data.7z
+data_timing/lab_data/47waves/RAW/DataR_47waves.root
+__pycache__/
+*.pyc

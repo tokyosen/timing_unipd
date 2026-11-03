@@ -1,0 +1,71 @@
+{
+  "input": {
+    "path": "../1or/42energy/RAW/DataR_42energy.root",
+    "pattern": "DataR_*.root",
+    "tree": "Data_R"
+  },
+  "output": {
+    "path": "output",
+    "save_root": true
+  },
+  "plot": {
+    "enabled": true,
+    "width": 1600,
+    "height": 1000,
+    "log_y": false
+  },
+  "histograms": [
+    {
+      "name": "Energy",
+      "expression": "Energy",
+      "bins": 1300,
+      "range": "auto",
+      "x_range": "auto",
+      "title": "Channel {channel} ({file})",
+      "x_title": "ADC channel",
+      "y_title": "Entries",
+      "fits": [
+        {
+          "name": "511 keV",
+          "function": "gaus",
+          "range": [60, 120],
+          "parameters": [
+            { "index": 1, "name": "mean", "init": 90, "limits": [60, 120] },
+            { "index": 2, "name": "sigma", "init": 30, "limits": [1, 200] }
+          ]
+        },
+        {
+          "name": "1275 keV",
+          "function": "gaus",
+          "range": [220, 400],
+          "parameters": [
+            { "index": 1, "name": "mean", "init": 300, "limits": [220, 400] },
+            { "index": 2, "name": "sigma", "init": 50, "limits": [1, 500] }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "EnergyShort",
+      "expression": "EnergyShort",
+      "bins": 1300,
+      "range": "auto",
+      "x_range": "auto",
+      "title": "Channel {channel} ({file})",
+      "x_title": "ADC channel",
+      "y_title": "Entries",
+      "fits": []
+    },
+    {
+      "name": "Difference",
+      "expression": "Energy - EnergyShort",
+      "bins": 1300,
+      "range": "auto",
+      "x_range": "auto",
+      "title": "Channel {channel} ({file})",
+      "x_title": "ADC channel difference",
+      "y_title": "Entries",
+      "fits": []
+    }
+  ]
+}

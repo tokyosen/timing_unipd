@@ -1,0 +1,51 @@
+Run ID = try_2
+Start time = lun ott 26 18:51:13 2026
+
+CH0@DT5751_327
+	Energy calibration: C0 = 0; C1 = 1; C2 = 0; unit = keV
+	Real time = 0:00:05.941
+	Live time = 0:00:05.941
+	Dead time = 0.00 %
+	Input counts = 111; rate (cps) = 18.7±1.8
+	Pile up counts = 0; rate (cps) = 0
+	Saturation counts = 0; rate (cps) = 0
+	E cut counts = 0; rate (cps) = 0
+	PSD cut counts = 0; rate (cps) = 0
+	T cut counts = 0; rate (cps) = 0
+	Singles counts = 0; rate (cps) = 0
+	Output counts = 111; rate (cps) = 18.7±1.8
+	Gamma counts = 0; rate (cps) = 0
+	Neutron counts = 111; rate (cps) = 18.7±1.8
+
+CH1@DT5751_327
+	Energy calibration: C0 = 0; C1 = 1; C2 = 0; unit = keV
+	Real time = 0:00:05.941
+	Live time = 0:00:05.941
+	Dead time = 0.00 %
+	Input counts = 111; rate (cps) = 18.7±1.8
+	Pile up counts = 0; rate (cps) = 0
+	Saturation counts = 0; rate (cps) = 0
+	E cut counts = 0; rate (cps) = 0
+	PSD cut counts = 0; rate (cps) = 0
+	T cut counts = 0; rate (cps) = 0
+	Singles counts = 0; rate (cps) = 0
+	Output counts = 111; rate (cps) = 18.7±1.8
+	Gamma counts = 1; rate (cps) = 0.17±0.17
+	Neutron counts = 110; rate (cps) = 18.5±1.8
+
+CH2@DT5751_327
+	Energy calibration: C0 = 0; C1 = 1; C2 = 0; unit = keV
+	Real time = 0:00:05.941
+	Live time = 0:00:03.011
+	Dead time = 49.32 %
+	Input counts = 219; rate (cps) = 36.9±2.5
+	Pile up counts = 0; rate (cps) = 0
+	Saturation counts = 0; rate (cps) = 0
+	E cut counts = 0; rate (cps) = 0
+	PSD cut counts = 0; rate (cps) = 0
+	T cut counts = 0; rate (cps) = 0
+	Singles counts = 0; rate (cps) = 0
+	Output counts = 111; rate (cps) = 18.7±1.8
+	Gamma counts = 4; rate (cps) = 0.67±0.34
+	Neutron counts = 107; rate (cps) = 18±1.7
+
