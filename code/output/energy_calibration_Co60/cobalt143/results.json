@@ -1,0 +1,190 @@
+{
+  "generated": "2026-11-03T23:20:31+00:00",
+  "config_file": "/home/senzhao/Desktop/code/Ms_unipd/code/config/config_lab_energy_Co60.json",
+  "input": {
+    "path": "/home/senzhao/Desktop/code/Ms_unipd/data_timing/lab_data/cobalt143",
+    "pattern": "RAW/DataR_*.root",
+    "tree": "Data_R"
+  },
+  "output": "/home/senzhao/Desktop/code/Ms_unipd/code/output/energy_calibration_Co60/cobalt143",
+  "files": [
+    {
+      "input_file": "/home/senzhao/Desktop/code/Ms_unipd/data_timing/lab_data/cobalt143/RAW/DataR_cobalt143.root",
+      "channels": [
+        {
+          "channel": 0,
+          "histograms": [
+            {
+              "name": "Energy_det1",
+              "expression": "Energy",
+              "bins": 500,
+              "range": [
+                0.0,
+                6142.5
+              ],
+              "entries": 1215561,
+              "fits": [
+                {
+                  "name": "Co60 CE det1",
+                  "function": "gaus",
+                  "range": [
+                    245.0,
+                    400.0
+                  ],
+                  "valid": true,
+                  "status": 0,
+                  "chi2": 1092.464019574985,
+                  "ndf": 10,
+                  "chi2_ndf": 109.2464019574985,
+                  "p_value": 2.2229810656183923e-228,
+                  "parameters": [
+                    {
+                      "index": 0,
+                      "name": "Constant",
+                      "value": 51851.317448749614,
+                      "error": 92.06852976577123
+                    },
+                    {
+                      "index": 1,
+                      "name": "mean",
+                      "value": 297.05436838632914,
+                      "error": 0.24573086086888907
+                    },
+                    {
+                      "index": 2,
+                      "name": "sigma",
+                      "value": 69.04236421976294,
+                      "error": 0.26488738484501795
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "EnergyShort",
+              "expression": "EnergyShort",
+              "bins": 1600,
+              "range": [
+                0.0,
+                6142.5
+              ],
+              "entries": 1215561,
+              "fits": []
+            },
+            {
+              "name": "Difference",
+              "expression": "Energy - EnergyShort",
+              "bins": 1600,
+              "range": [
+                -235.0,
+                1804.5
+              ],
+              "entries": 1215561,
+              "fits": []
+            }
+          ]
+        },
+        {
+          "channel": 1,
+          "histograms": [
+            {
+              "name": "Energy_det2",
+              "expression": "Energy",
+              "bins": 800,
+              "range": [
+                0.0,
+                6142.5
+              ],
+              "entries": 1215561,
+              "fits": [
+                {
+                  "name": "Co60 CE det2",
+                  "function": "gaus",
+                  "range": [
+                    1400.0,
+                    1900.0
+                  ],
+                  "valid": true,
+                  "status": 0,
+                  "chi2": 1656.707143517268,
+                  "ndf": 62,
+                  "chi2_ndf": 26.721082959955933,
+                  "p_value": 2.451473540429495e-305,
+                  "parameters": [
+                    {
+                      "index": 0,
+                      "name": "Constant",
+                      "value": 5985.780311067684,
+                      "error": 14.107551728147852
+                    },
+                    {
+                      "index": 1,
+                      "name": "mean",
+                      "value": 1563.8474821970542,
+                      "error": 0.8410812908845173
+                    },
+                    {
+                      "index": 2,
+                      "name": "sigma",
+                      "value": 201.26354824983264,
+                      "error": 0.8791617850993134
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "EnergyShort",
+              "expression": "EnergyShort",
+              "bins": 1600,
+              "range": [
+                0.0,
+                6142.5
+              ],
+              "entries": 1215561,
+              "fits": []
+            },
+            {
+              "name": "Difference",
+              "expression": "Energy - EnergyShort",
+              "bins": 1600,
+              "range": [
+                -960.0,
+                3544.5
+              ],
+              "entries": 1215561,
+              "fits": []
+            }
+          ]
+        },
+        {
+          "channel": 2,
+          "histograms": [
+            {
+              "name": "EnergyShort",
+              "expression": "EnergyShort",
+              "bins": 1600,
+              "range": [
+                0.0,
+                613.5
+              ],
+              "entries": 1215450,
+              "fits": []
+            },
+            {
+              "name": "Difference",
+              "expression": "Energy - EnergyShort",
+              "bins": 1600,
+              "range": [
+                -408.0,
+                6141.0
+              ],
+              "entries": 1215450,
+              "fits": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

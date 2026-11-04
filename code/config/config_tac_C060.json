@@ -1,0 +1,52 @@
+{
+  "input": {
+    "path": "../../data_timing/lab_data/cobalt143",
+    "pattern": "RAW/DataR_*.root",
+    "tree": "Data_R"
+  },
+  "output": {
+    "path": "Co60",
+    "save_root": true
+  },
+  "plot": {
+    "enabled": true,
+    "width": 1600,
+    "height": 1000,
+    "log_y": false
+  },
+  "histograms": [
+    {
+      "name": "Energy",
+      "expression": "Energy",
+      "bins": 800,
+      "x_range": [
+        0,
+        1600
+      ],
+      "title": "TAC Co60",
+      "x_title": "ADC channel",
+      "y_title": "Entries",
+      "fits": [
+        {
+          "name": "TAC",
+          "function": "gaus",
+          "range": [
+            950,1075],
+          "channels": [
+            2
+          ],
+          "parameters": [
+            {
+              "index": 1,
+              "name": "mean"
+            },
+            {
+              "index": 2,
+              "name": "sigma"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

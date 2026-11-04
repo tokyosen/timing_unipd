@@ -7,6 +7,7 @@ from pathlib import Path
 import ROOT
 
 import calibration
+import digital_cfd
 import read
 
 
@@ -47,6 +48,17 @@ def parse_args(argv: list[str] | None) -> argparse.Namespace:
         "--all-fits",
         action="store_true",
         help="Run every fitting config found in the config folder.",
+    )
+    parser.add_argument(
+        "--waves",
+        action="store_true",
+        help="Run the digital CFD waveform analysis (47waves).",
+    )
+    parser.add_argument(
+        "--waves-config",
+        type=Path,
+        default=Path(__file__).parent / "config" / "config_waves.json",
+        help="Digital CFD configuration.",
     )
     parser.add_argument(
         "--skip-calibration",
@@ -150,6 +162,18 @@ def main(argv: list[str] | None = None) -> int:
                 print(f"ERROR: {exc}")
                 status = 1
             print()
+
+    if args.waves or args.all:
+        print("=" * 60)
+        print("Digital CFD (waveforms)")
+        print("=" * 60)
+        try:
+            waves_config, _ = digital_cfd.load_config(args.waves_config)
+            digital_cfd.run(waves_config)
+        except (digital_cfd.CfdError, OSError) as exc:
+            print(f"ERROR: {exc}")
+            status = 1
+        print()
 
     return status
 

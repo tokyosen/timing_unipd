@@ -1,0 +1,85 @@
+{
+  "input": {
+    "path": "../../data_timing/lab_data/cobalt143",
+    "pattern": "RAW/DataR_*.root",
+    "tree": "Data_R"
+  },
+  "output": {
+    "path": "energy_calibration_Co60",
+    "save_root": true
+  },
+  "plot": {
+    "enabled": true,
+    "width": 1600,
+    "height": 1000,
+    "log_y": false
+  },
+  "histograms": [
+    {
+      "name": "Energy_det1",
+      "expression": "Energy",
+      "channels": [0],
+      "bins": 500,
+      "range": "auto",
+      "x_range": [0, 600],
+      "title": "Co-60 Compton edge - Detector 1",
+      "x_title": "ADC channel",
+      "y_title": "Entries",
+      "fits": [
+        {
+          "name": "Co60 CE det1",
+          "function": "gaus",
+          "range": [245, 400],
+          "parameters": [
+            { "index": 1, "name": "mean", "init": 295, "limits": [240, 400] },
+            { "index": 2, "name": "sigma", "init": 70, "limits": [5, 300] }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Energy_det2",
+      "expression": "Energy",
+      "channels": [1],
+      "bins": 800,
+      "range": "auto",
+      "x_range": [0, 2000],
+      "title": "Co-60 Compton edge - Detector 2",
+      "x_title": "ADC channel",
+      "y_title": "Entries",
+      "fits": [
+        {
+          "name": "Co60 CE det2",
+          "function": "gaus",
+          "range": [1400, 1900],
+          "parameters": [
+            { "index": 1, "name": "mean", "init": 1557, "limits": [1400, 1700] },
+            { "index": 2, "name": "sigma", "init": 200, "limits": [10, 500] }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "EnergyShort",
+      "expression": "EnergyShort",
+      "bins": 1600,
+      "range": "auto",
+      "x_range": "auto",
+      "title": "Co-60",
+      "x_title": "ADC channel",
+      "y_title": "Entries",
+      "fits": []
+    },
+    {
+      "name": "Difference",
+      "expression": "Energy - EnergyShort",
+      "bins": 1600,
+      "range": "auto",
+      "x_range": "auto",
+      "title": "Co-60",
+      "x_title": "ADC channel difference",
+      "y_title": "Entries",
+      "fits": []
+    }
+  ]
+}

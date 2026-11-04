@@ -25,10 +25,16 @@
 ~/miniforge3/envs/rootenv/bin/python main.py --calibration config/config_walk.json
 ```
 
-### All TAC tags + walk
+### All TAC tags + walk + digital CFD
 
 ```bash
 ~/miniforge3/envs/rootenv/bin/python main.py --all
+```
+
+### Digital CFD (section 4.7, waveform data 47waves)
+
+```bash
+~/miniforge3/envs/rootenv/bin/python main.py --waves --skip-fitting --skip-calibration
 ```
 
 ### Fitting only — all configs
@@ -55,10 +61,11 @@
 ~/miniforge3/envs/rootenv/bin/python read.py --config config/config.json
 ~/miniforge3/envs/rootenv/bin/python calibration.py -c config/config_calibration_tac.json
 ~/miniforge3/envs/rootenv/bin/python calibration.py -c config/config_walk.json
+~/miniforge3/envs/rootenv/bin/python digital_cfd.py -c config/config_waves.json
 ```
 
 ## Notes
 
 - Configs: `code/config/`
 - Outputs: `code/output/` (always; `-o` takes a sub-folder name there)
-- `main.py` options: `--all`, `--all-fits`, `--tag`, `--calibration`, `-c/--config`, `--skip-fitting`, `--skip-calibration`
+- `main.py` options: `--all`, `--all-fits`, `--waves`, `--waves-config`, `--tag`, `--calibration`, `-c/--config`, `--skip-fitting`, `--skip-calibration`
