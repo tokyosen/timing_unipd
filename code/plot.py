@@ -29,7 +29,7 @@ def plot_histogram(
     histogram.SetLineColor(line_color)
     histogram.SetLineWidth(2)
     histogram.SetFillColor(fill_color)
-    histogram.SetFillColorAlpha(fill_color, 0.55)
+    histogram.SetFillColorAlpha(fill_color, 0.35)
     histogram.Draw("hist")
 
     for fit in fits:

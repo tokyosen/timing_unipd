@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import math
+import re
 from dataclasses import dataclass
 from typing import Any
 
@@ -115,8 +116,10 @@ def fit_histogram(
             f"Cannot configure fit {config['name']!r}: {exc}"
         ) from exc
 
+    _init_composite(function, histogram, config, low, high)
+
     function.SetLineColor(color if color is not None else PALETTE[0])
-    function.SetLineWidth(4)
+    function.SetLineWidth(6)
 
     result = histogram.Fit(function, "RSQ", "", low, high)
 
@@ -150,6 +153,49 @@ def fit_histogram(
         p_value=float(function.GetProb()),
         parameters=parameters,
     )
+
+
+def _init_composite(
+    function: ROOT.TF1,
+    histogram: ROOT.TH1D,
+    config: dict[str, Any],
+    low: float,
+    high: float,
+) -> None:
+    defined = {parameter["index"] for parameter in config["parameters"]}
+    x_axis = histogram.GetXaxis()
+    first = x_axis.FindBin(low)
+    last = x_axis.FindBin(high)
+    if last <= first:
+        return
+
+    if re.search(r"gaus\(\s*0\s*\)", config["function"]) and 0 not in defined:
+        peak = max(
+            histogram.GetBinContent(index)
+            for index in range(first, last + 1)
+        )
+        function.SetParameter(0, peak)
+
+    match = re.search(r"pol1\(\s*(\d+)\s*\)", config["function"])
+    if match is None:
+        return
+    index = int(match.group(1))
+    if index in defined or index + 1 in defined:
+        return
+
+    def edge_bins(start: int) -> float:
+        contents = [
+            histogram.GetBinContent(position)
+            for position in range(start, start + 3)
+            if first <= position <= last
+        ]
+        return sum(contents) / len(contents) if contents else 0.0
+
+    y_low = edge_bins(first)
+    y_high = edge_bins(max(first, last - 2))
+    slope = (y_high - y_low) / (high - low) if high != low else 0.0
+    function.SetParameter(index, y_low - slope * low)
+    function.SetParameter(index + 1, slope)
 
 
 def _parameter_name(

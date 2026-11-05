@@ -1,12 +1,12 @@
 {
-  "generated": "2026-11-03T18:54:44+00:00",
-  "config_file": "/home/senzhao/Desktop/code/Ms_unipd/code/config_lab_energy_D2.json",
+  "generated": "2026-11-05T07:54:42+00:00",
+  "config_file": "/home/senzhao/Desktop/code/Ms_unipd/code/config/config_lab_energy_D2.json",
   "input": {
     "path": "/home/senzhao/Desktop/code/Ms_unipd/data_timing/lab_data/42energyday2D2",
     "pattern": "RAW/DataR_*.root",
     "tree": "Data_R"
   },
-  "output": "/home/senzhao/Desktop/code/Ms_unipd/code/output_energy_calibration_D2/42energyday2D2",
+  "output": "/home/senzhao/Desktop/code/Ms_unipd/code/output/energy_calibration_D2/42energyday2D2",
   "files": [
     {
       "input_file": "/home/senzhao/Desktop/code/Ms_unipd/data_timing/lab_data/42energyday2D2/RAW/DataR_42energyday2D2.root",
@@ -20,79 +20,10 @@
               "bins": 700,
               "range": [
                 0.0,
-                2700.0
+                2100.0
               ],
               "entries": 714840,
-              "fits": [
-                {
-                  "name": "511 keV",
-                  "function": "gaus",
-                  "range": [
-                    440.0,
-                    640.0
-                  ],
-                  "valid": true,
-                  "status": 0,
-                  "chi2": 29.908380586718582,
-                  "ndf": 17,
-                  "chi2_ndf": 1.759316505101093,
-                  "p_value": 0.02701343569465481,
-                  "parameters": [
-                    {
-                      "index": 0,
-                      "name": "Constant",
-                      "value": 4.880159932120174,
-                      "error": 1.3679384676250452
-                    },
-                    {
-                      "index": 1,
-                      "name": "mean",
-                      "value": 410.00000728247403,
-                      "error": 37.50587616762323
-                    },
-                    {
-                      "index": 2,
-                      "name": "sigma",
-                      "value": 67.56583890881991,
-                      "error": 16.820886138888334
-                    }
-                  ]
-                },
-                {
-                  "name": "1275 keV",
-                  "function": "gaus",
-                  "range": [
-                    1500.0,
-                    1800.0
-                  ],
-                  "valid": true,
-                  "status": 1,
-                  "chi2": 3.485755832695598e-11,
-                  "ndf": 0,
-                  "chi2_ndf": null,
-                  "p_value": 0.0,
-                  "parameters": [
-                    {
-                      "index": 0,
-                      "name": "Constant",
-                      "value": 1.2987630251163462,
-                      "error": 19.33062300053014
-                    },
-                    {
-                      "index": 1,
-                      "name": "mean",
-                      "value": 1606.3190028405686,
-                      "error": 3.8231230052195997
-                    },
-                    {
-                      "index": 2,
-                      "name": "sigma",
-                      "value": 0.25032179413488775,
-                      "error": 1.3201722511948553
-                    }
-                  ]
-                }
-              ]
+              "fits": []
             },
             {
               "name": "EnergyShort",
@@ -127,75 +58,75 @@
               "bins": 700,
               "range": [
                 0.0,
-                6142.5
+                2100.0
               ],
               "entries": 714840,
               "fits": [
                 {
                   "name": "511 keV",
-                  "function": "gaus",
+                  "function": "gaus(0)",
                   "range": [
                     440.0,
                     640.0
                   ],
                   "valid": true,
                   "status": 0,
-                  "chi2": 410.3133550898579,
-                  "ndf": 20,
-                  "chi2_ndf": 20.515667754492895,
-                  "p_value": 1.479029897718834e-74,
+                  "chi2": 93.66147707659097,
+                  "ndf": 63,
+                  "chi2_ndf": 1.4866901123268408,
+                  "p_value": 0.007336856445164123,
                   "parameters": [
                     {
                       "index": 0,
                       "name": "Constant",
-                      "value": 7684.529936363212,
-                      "error": 26.178245438379232
+                      "value": 2631.332110373202,
+                      "error": 9.068457392473665
                     },
                     {
                       "index": 1,
                       "name": "mean",
-                      "value": 501.04632660421663,
-                      "error": 0.8362624906786209
+                      "value": 503.06384809005186,
+                      "error": 0.8120154227024443
                     },
                     {
                       "index": 2,
                       "name": "sigma",
-                      "value": 101.96802651791822,
-                      "error": 0.9969293878856078
+                      "value": 100.43561313593835,
+                      "error": 0.9890893300763821
                     }
                   ]
                 },
                 {
                   "name": "1275 keV",
-                  "function": "gaus",
+                  "function": "gaus(0) ",
                   "range": [
                     1500.0,
                     1800.0
                   ],
                   "valid": true,
                   "status": 0,
-                  "chi2": 214.66198353776934,
-                  "ndf": 31,
-                  "chi2_ndf": 6.924580114121592,
-                  "p_value": 2.3428315496053503e-29,
+                  "chi2": 167.32488975220463,
+                  "ndf": 97,
+                  "chi2_ndf": 1.72499886342479,
+                  "p_value": 1.2141026912489733e-05,
                   "parameters": [
                     {
                       "index": 0,
                       "name": "Constant",
-                      "value": 1735.4085032395044,
-                      "error": 11.070387178960265
+                      "value": 592.2884172270903,
+                      "error": 3.785517272046797
                     },
                     {
                       "index": 1,
                       "name": "mean",
-                      "value": 1652.4512824188298,
-                      "error": 1.2404575357976455
+                      "value": 1653.5820988853372,
+                      "error": 1.2624098972111142
                     },
                     {
                       "index": 2,
                       "name": "sigma",
-                      "value": 149.8181916003613,
-                      "error": 2.3800899776511812
+                      "value": 151.915849551614,
+                      "error": 2.452201458638001
                     }
                   ]
                 }
@@ -234,79 +165,10 @@
               "bins": 700,
               "range": [
                 0.0,
-                5170.5
+                2100.0
               ],
               "entries": 691308,
-              "fits": [
-                {
-                  "name": "511 keV",
-                  "function": "gaus",
-                  "range": [
-                    440.0,
-                    640.0
-                  ],
-                  "valid": true,
-                  "status": 1,
-                  "chi2": 2.4820862912180353e-09,
-                  "ndf": 0,
-                  "chi2_ndf": null,
-                  "p_value": 0.0,
-                  "parameters": [
-                    {
-                      "index": 0,
-                      "name": "Constant",
-                      "value": 1.3449873067970088,
-                      "error": 20.04977708215081
-                    },
-                    {
-                      "index": 1,
-                      "name": "mean",
-                      "value": 469.2386562950026,
-                      "error": 4.430923816941771
-                    },
-                    {
-                      "index": 2,
-                      "name": "sigma",
-                      "value": 0.26036491054567895,
-                      "error": 1.254738478527484
-                    }
-                  ]
-                },
-                {
-                  "name": "1275 keV",
-                  "function": "gaus",
-                  "range": [
-                    1500.0,
-                    1800.0
-                  ],
-                  "valid": true,
-                  "status": 0,
-                  "chi2": 7.961535459692604e-05,
-                  "ndf": 0,
-                  "chi2_ndf": null,
-                  "p_value": 0.0,
-                  "parameters": [
-                    {
-                      "index": 0,
-                      "name": "Constant",
-                      "value": 1.0865575765631552,
-                      "error": 3.584299582991069
-                    },
-                    {
-                      "index": 1,
-                      "name": "mean",
-                      "value": 1659.9635186647913,
-                      "error": 329.8252768938877
-                    },
-                    {
-                      "index": 2,
-                      "name": "sigma",
-                      "value": 247.36692777327718,
-                      "error": 740.360330565331
-                    }
-                  ]
-                }
-              ]
+              "fits": []
             },
             {
               "name": "EnergyShort",

@@ -19,18 +19,21 @@
       "name": "Energy",
       "expression": "Energy",
       "bins": 700,
-      "range": "auto",
+      "range": [
+        0,
+        2100
+      ],
       "x_range": [
         0,
         2100
       ],
-      "title": "Energy Calibration of Detector 1",
+      "title": "Energy Calibration of Detector 2",
       "x_title": "ADC channel",
       "y_title": "Entries",
       "fits": [
         {
           "name": "511 keV",
-          "function": "gaus",
+          "function": "gaus(0)",
           "range": [
             440,
             640
@@ -50,15 +53,18 @@
               "name": "sigma",
               "init": 30,
               "limits": [
-                1,
-                400
+                10,
+                200
               ]
             }
+          ],
+          "channels": [
+            1
           ]
         },
         {
           "name": "1275 keV",
-          "function": "gaus",
+          "function": "gaus(0) ",
           "range": [
             1500,
             1800
@@ -78,10 +84,13 @@
               "name": "sigma",
               "init": 50,
               "limits": [
-                1,
-                500
+                20,
+                300
               ]
             }
+          ],
+          "channels": [
+            1
           ]
         }
       ]
@@ -92,7 +101,7 @@
       "bins": 1300,
       "range": "auto",
       "x_range": "auto",
-      "title": "Energy Calibration of Detector 1",
+      "title": "Energy Calibration of Detector 2",
       "x_title": "ADC channel",
       "y_title": "Entries",
       "fits": []
@@ -103,7 +112,7 @@
       "bins": 1300,
       "range": "auto",
       "x_range": "auto",
-      "title": "Energy Calibration of Detector 1",
+      "title": "Energy Calibration of Detector 2",
       "x_title": "ADC channel difference",
       "y_title": "Entries",
       "fits": []

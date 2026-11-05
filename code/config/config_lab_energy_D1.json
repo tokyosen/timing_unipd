@@ -19,7 +19,10 @@
       "name": "Energy",
       "expression": "Energy",
       "bins": 1200,
-      "range": "auto",
+      "range": [
+        0,
+        700
+      ],
       "x_range": [
         0,
         600
@@ -30,10 +33,10 @@
       "fits": [
         {
           "name": "511 keV",
-          "function": "gaus",
+          "function": "gaus(0)",
           "range": [
-            65,
-            130
+            80,
+            135
           ],
           "parameters": [
             {
@@ -50,15 +53,18 @@
               "name": "sigma",
               "init": 30,
               "limits": [
-                1,
-                200
+                5,
+                50
               ]
             }
+          ],
+          "channels": [
+            0
           ]
         },
         {
           "name": "1275 keV",
-          "function": "gaus",
+          "function": "gaus(0) ",
           "range": [
             300,
             400
@@ -78,10 +84,13 @@
               "name": "sigma",
               "init": 50,
               "limits": [
-                1,
-                500
+                10,
+                100
               ]
             }
+          ],
+          "channels": [
+            0
           ]
         }
       ]
