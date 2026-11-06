@@ -273,6 +273,99 @@ def sequential_time_differences(
     return values
 
 
+def plot_scan_heatmap(
+    results: list[dict[str, Any]],
+    best: tuple[float, float, float],
+    path: Path,
+    config: dict[str, Any],
+    log_z: bool = False,
+) -> None:
+    from scipy.interpolate import griddata
+    from scipy.ndimage import gaussian_filter
+    from plot import apply_style
+
+    points = [
+        (entry["delay"], entry["fraction"], entry["fwhm"])
+        for entry in results
+        if entry["fwhm"] is not None and np.isfinite(entry["fwhm"])
+    ]
+    if not points:
+        return
+
+    delays = sorted({entry["delay"] for entry in results})
+    fractions = sorted({entry["fraction"] for entry in results})
+    x = np.asarray([point[0] for point in points])
+    y = np.asarray([point[1] for point in points])
+    z = np.asarray([point[2] for point in points])
+
+    grid_x = np.linspace(delays[0], delays[-1], 451)
+    grid_y = np.linspace(fractions[0], fractions[-1], 101)
+    mesh_x, mesh_y = np.meshgrid(grid_x, grid_y)
+    grid_z = griddata(
+        np.column_stack([x, y]), z, (mesh_x, mesh_y), method="cubic"
+    )
+    missing = ~np.isfinite(grid_z)
+    if missing.any():
+        nearest = griddata(
+            np.column_stack([x, y]), z, (mesh_x, mesh_y), method="nearest"
+        )
+        grid_z[missing] = nearest[missing]
+    grid_z = gaussian_filter(grid_z, sigma=(2.0, 4.0))
+
+    apply_style()
+    ROOT.gStyle.SetPalette(ROOT.kRainBow)
+    canvas = ROOT.TCanvas(
+        "c_scan_heatmap",
+        "Digital CFD scan",
+        config["width"],
+        config["height"],
+    )
+    canvas.SetMargin(0.13, 0.13, 0.13, 0.09)
+
+    suffix = " (smoothed, log scale)" if log_z else " (smoothed)"
+    histogram = ROOT.TH2D(
+        "h_cfd_heatmap",
+        f"Digital CFD: time resolution map{suffix};"
+        "Delay (ns);Fraction F;FWHM (ns)",
+        len(grid_x) - 1,
+        grid_x[0],
+        grid_x[-1],
+        len(grid_y) - 1,
+        grid_y[0],
+        grid_y[-1],
+    )
+    for row in range(len(grid_y)):
+        for column in range(len(grid_x)):
+            value = grid_z[row, column]
+            histogram.SetBinContent(
+                column + 1, row + 1, float(value)
+            )
+    histogram.SetStats(False)
+    if log_z:
+        histogram.GetZaxis().SetRangeUser(
+            max(0.3, float(np.min(grid_z))),
+            min(2.0, float(np.percentile(grid_z, 99))),
+        )
+    else:
+        histogram.GetZaxis().SetRangeUser(
+            max(0.0, float(np.min(grid_z)) - 0.05),
+            min(1.2, float(np.percentile(grid_z, 99))),
+        )
+    histogram.Draw("COLZ")
+    if log_z:
+        canvas.SetLogz()
+
+    marker = ROOT.TMarker(best[1], best[2], ROOT.kOpenCircle)
+    marker.SetMarkerColor(ROOT.kBlack)
+    marker.SetMarkerSize(2.0)
+    marker.Draw("same")
+
+    canvas.Modified()
+    canvas.Update()
+    canvas.SaveAs(str(path))
+    canvas.Close()
+
+
 def plot_amplitudes(
     first: np.ndarray,
     second: np.ndarray,
@@ -727,6 +820,19 @@ def run(config: dict[str, Any]) -> dict[str, Any]:
             (fwhm, delay, fraction),
             output / "cfd_scan_3d.png",
             config["plot"],
+        )
+        plot_scan_heatmap(
+            scan_results,
+            (fwhm, delay, fraction),
+            output / "cfd_scan_heatmap.png",
+            config["plot"],
+        )
+        plot_scan_heatmap(
+            scan_results,
+            (fwhm, delay, fraction),
+            output / "cfd_scan_heatmap_log.png",
+            config["plot"],
+            log_z=True,
         )
         plot_amplitudes(
             amplitudes_first,
