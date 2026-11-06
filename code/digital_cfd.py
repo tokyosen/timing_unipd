@@ -233,35 +233,104 @@ def time_differences(
         time_a = crossing(signal_a, delay, fraction, min_amplitude)
         time_b = crossing(signal_b, delay, fraction, min_amplitude)
         if time_a is not None and time_b is not None:
-            values.append(time_b - time_a)
+            values.append(time_a - time_b)
     return np.asarray(values, dtype=np.float64)
 
 
 def sequential_time_differences(
     waveforms: Waveforms,
-    delay: int,
+    delay: float,
     fraction: float,
     min_amplitude: float,
-) -> np.ndarray:
+    with_amplitudes: bool = False,
+):
     tree = waveforms.tree
     first, second = waveforms.channels
     maps = {first: {}, second: {}}
+    amplitudes = {first: [], second: []}
     for index in range(int(tree.GetEntries())):
         tree.GetEntry(index)
         channel = int(tree.Channel)
         if channel not in maps:
             continue
-        value = crossing(
-            waveforms.current_signal(), delay, fraction, min_amplitude
-        )
+        signal = waveforms.current_signal()
+        amplitudes[channel].append(float(signal.max()))
+        value = crossing(signal, delay, fraction, min_amplitude)
         if value is not None:
             maps[channel][int(tree.Timestamp)] = value
 
     common = maps[first].keys() & maps[second].keys()
-    return np.asarray(
-        [maps[second][stamp] - maps[first][stamp] for stamp in common],
+    values = np.asarray(
+        [maps[first][stamp] - maps[second][stamp] for stamp in common],
         dtype=np.float64,
     )
+    if with_amplitudes:
+        return (
+            values,
+            np.asarray(amplitudes[first], dtype=np.float64),
+            np.asarray(amplitudes[second], dtype=np.float64),
+        )
+    return values
+
+
+def plot_amplitudes(
+    first: np.ndarray,
+    second: np.ndarray,
+    path: Path,
+    config: dict[str, Any],
+) -> None:
+    from plot import apply_style
+
+    apply_style()
+    limit = float(
+        np.percentile(np.concatenate([first, second]), 99.5) * 1.15
+    )
+    bins = 300
+    histogram_first = ROOT.TH1D("h_amp_first", "", bins, 0.0, limit)
+    histogram_second = ROOT.TH1D("h_amp_second", "", bins, 0.0, limit)
+    for histogram, values in (
+        (histogram_first, first),
+        (histogram_second, second),
+    ):
+        histogram.SetDirectory(0)
+        histogram.FillN(
+            values.size, values, np.ones(values.size, dtype=np.float64)
+        )
+
+    canvas = ROOT.TCanvas(
+        "c_amplitude",
+        "Pulse amplitude distribution",
+        config["width"],
+        config["height"],
+    )
+    canvas.SetMargin(0.13, 0.05, 0.13, 0.09)
+    canvas.SetTicks(1, 1)
+
+    histogram_first.SetLineColor(ROOT.TColor.GetColor("#1F4E79"))
+    histogram_first.SetLineWidth(3)
+    histogram_second.SetLineColor(ROOT.TColor.GetColor("#E63946"))
+    histogram_second.SetLineWidth(3)
+
+    histogram_first.GetXaxis().SetTitle("Pulse amplitude (ADC channel)")
+    histogram_first.GetYaxis().SetTitle("Entries")
+    histogram_first.SetTitle("Pulse amplitude distribution")
+    histogram_first.Draw("hist")
+    histogram_second.Draw("hist same")
+
+    legend = ROOT.TLegend(0.66, 0.80, 0.91, 0.90)
+    legend.SetBorderSize(0)
+    legend.SetFillStyle(1001)
+    legend.SetFillColorAlpha(ROOT.kWhite, 0.85)
+    legend.AddEntry(histogram_first, "Channel 0", "l")
+    legend.AddEntry(histogram_second, "Channel 1", "l")
+    legend.Draw()
+
+    canvas.SetGridx()
+    canvas.SetGridy()
+    canvas.Modified()
+    canvas.Update()
+    canvas.SaveAs(str(path))
+    canvas.Close()
 
 
 def gaussian_width(
@@ -394,6 +463,17 @@ def scan(
 
 def _finite(value: float) -> float | None:
     return float(value) if np.isfinite(value) else None
+
+
+def _amplitude_stats(values: np.ndarray) -> dict[str, Any]:
+    if values.size == 0:
+        return {"entries": 0}
+    return {
+        "entries": int(values.size),
+        "mean": _finite(float(np.mean(values))),
+        "median": _finite(float(np.median(values))),
+        "max": _finite(float(np.max(values))),
+    }
 
 
 def _bin_edges(values: list[float]) -> np.ndarray:
@@ -539,7 +619,7 @@ def plot_resolution(
     function.SetLineWidth(3)
     function.Draw("same")
 
-    histogram.GetXaxis().SetTitle("t_{1} - t_{0} (ns)")
+    histogram.GetXaxis().SetTitle("t_{0} - t_{1} (ns)")
     histogram.GetYaxis().SetTitle("Entries")
     histogram.GetXaxis().SetTitleSize(0.045)
     histogram.GetYaxis().SetTitleSize(0.045)
@@ -601,12 +681,17 @@ def run(config: dict[str, Any]) -> dict[str, Any]:
     if not np.isfinite(fwhm):
         raise CfdError("CFD scan did not converge.")
 
-    values = sequential_time_differences(
+    values, amplitudes_first, amplitudes_second = sequential_time_differences(
         waveforms,
         delay,
         fraction,
         cfd["min_amplitude"],
+        with_amplitudes=True,
     )
+    threshold = float(cfd["min_amplitude"])
+    amplitudes_first = amplitudes_first[amplitudes_first >= threshold]
+    amplitudes_second = amplitudes_second[amplitudes_second >= threshold]
+
     if values.size:
         center = float(np.median(values))
     fwhm, fwhm_error, histogram, function = gaussian_width(
@@ -643,6 +728,12 @@ def run(config: dict[str, Any]) -> dict[str, Any]:
             output / "cfd_scan_3d.png",
             config["plot"],
         )
+        plot_amplitudes(
+            amplitudes_first,
+            amplitudes_second,
+            output / "amplitude_distribution.png",
+            config["plot"],
+        )
         if histogram is not None and function is not None:
             chi2_ndf = (
                 function.GetChisquare() / function.GetNDF()
@@ -672,6 +763,10 @@ def run(config: dict[str, Any]) -> dict[str, Any]:
         "sigma_error": sigma_error,
         "fwhm": fwhm,
         "fwhm_error": fwhm_error,
+        "amplitude": {
+            "channel0": _amplitude_stats(amplitudes_first),
+            "channel1": _amplitude_stats(amplitudes_second),
+        },
         "scan": [
             {
                 "delay": entry["delay"],

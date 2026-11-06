@@ -37,6 +37,12 @@
 ~/miniforge3/envs/rootenv/bin/python main.py --waves --skip-fitting --skip-calibration
 ```
 
+### Time resolution vs energy range (section 4.5, Co-60)
+
+```bash
+~/miniforge3/envs/rootenv/bin/python main.py --energy-scan --skip-fitting --skip-calibration
+```
+
 ### Fitting only — all configs
 
 ```bash
@@ -68,4 +74,4 @@
 
 - Configs: `code/config/`
 - Outputs: `code/output/` (always; `-o` takes a sub-folder name there)
-- `main.py` options: `--all`, `--all-fits`, `--waves`, `--waves-config`, `--tag`, `--calibration`, `-c/--config`, `--skip-fitting`, `--skip-calibration`
+- `main.py` options: `--all`, `--all-fits`, `--waves`, `--waves-config`, `--energy-scan`, `--energy-scan-config`, `--tag`, `--calibration`, `-c/--config`, `--skip-fitting`, `--skip-calibration`

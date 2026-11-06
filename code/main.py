@@ -8,6 +8,7 @@ import ROOT
 
 import calibration
 import digital_cfd
+import energy_scan
 import read
 
 
@@ -59,6 +60,17 @@ def parse_args(argv: list[str] | None) -> argparse.Namespace:
         type=Path,
         default=Path(__file__).parent / "config" / "config_waves.json",
         help="Digital CFD configuration.",
+    )
+    parser.add_argument(
+        "--energy-scan",
+        action="store_true",
+        help="Time resolution vs energy range (section 4.5, Co-60).",
+    )
+    parser.add_argument(
+        "--energy-scan-config",
+        type=Path,
+        default=Path(__file__).parent / "config" / "config_energy_scan.json",
+        help="Energy-range configuration.",
     )
     parser.add_argument(
         "--skip-calibration",
@@ -171,6 +183,18 @@ def main(argv: list[str] | None = None) -> int:
             waves_config, _ = digital_cfd.load_config(args.waves_config)
             digital_cfd.run(waves_config)
         except (digital_cfd.CfdError, OSError) as exc:
+            print(f"ERROR: {exc}")
+            status = 1
+        print()
+
+    if args.energy_scan or args.all:
+        print("=" * 60)
+        print("Time resolution vs energy range")
+        print("=" * 60)
+        try:
+            scan_config, _ = energy_scan.load_config(args.energy_scan_config)
+            energy_scan.run(scan_config)
+        except (energy_scan.EnergyScanError, OSError) as exc:
             print(f"ERROR: {exc}")
             status = 1
         print()
