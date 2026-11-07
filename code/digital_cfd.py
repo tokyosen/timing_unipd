@@ -521,7 +521,7 @@ def plot_amplitudes(
         if values.size == 0:
             continue
         apply_style()
-        limit = float(np.percentile(values, 99.5) * 1.15)
+        limit = float(values.max()) * 1.02
         histogram = ROOT.TH1D(
             f"h_amp_{channel}",
             f"Pulse amplitude distribution - Detector {channel + 1}",
@@ -564,7 +564,6 @@ def plot_amplitudes(
         histogram.GetXaxis().SetLabelSize(0.040)
         histogram.GetYaxis().SetLabelSize(0.040)
         histogram.Draw("hist")
-        canvas.SetLogy()
 
         canvas.SetGridx()
         canvas.SetGridy()
