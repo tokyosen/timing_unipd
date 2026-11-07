@@ -126,6 +126,8 @@
     "fit_half_width": 3.0,
     "hist_half_width": 8.0,
     "bins": 200,
-    "min_amplitude": 50.0
+    "min_amplitude": 50.0,
+    "amplitude_bins": 60,
+    "feature_bins": 60
   }
 }
