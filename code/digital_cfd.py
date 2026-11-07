@@ -71,6 +71,23 @@ def load_config(path: str | Path) -> tuple[dict[str, Any], Path]:
     cfd.setdefault("min_amplitude", 50.0)
     cfd.setdefault("amplitude_bins", 60)
     cfd.setdefault("feature_bins", 60)
+    cfd.setdefault(
+        "feature_fits",
+        {
+            "rise_time": [2.0, 5.0],
+            "fall_time": [12.0, 20.0],
+            "integral": [300.0, 500.0],
+        },
+    )
+    for key, bounds in cfd["feature_fits"].items():
+        if not isinstance(bounds, list) or len(bounds) != 2:
+            raise CfdError(
+                f'"cfd.feature_fits.{key}" must contain two numbers.'
+            )
+        cfd["feature_fits"][key] = [
+            _number(bounds[0], f"cfd.feature_fits.{key}"),
+            _number(bounds[1], f"cfd.feature_fits.{key}"),
+        ]
     cfd.setdefault("density_time_bins", 600)
     cfd.setdefault("density_amplitude_bins", 400)
     cfd.setdefault("density_amplitude_max", 1000.0)
@@ -413,13 +430,15 @@ def plot_waveform_features(
     config: dict[str, Any],
     bins: int = 60,
     energy_scale: dict[int, tuple[float, float]] | None = None,
-) -> None:
+    fit_ranges: dict[str, list[float]] | None = None,
+) -> dict[str, dict[str, dict[str, float | None]]]:
     from plot import apply_style
 
+    results: dict[str, dict[str, dict[str, float | None]]] = {}
     quantities = (
-        (0, "Rise time", "Rise time 10-90% (ns)", "rise_time"),
-        (1, "Fall time", "Fall time 90-10% (ns)", "fall_time"),
-        (2, "Integral", "Pulse integral (ADC #times ns)", "integral"),
+        (0, "Rise time", "Rise time 10-90% (ns)", "rise_time", "ns"),
+        (1, "Fall time", "Fall time 90-10% (ns)", "fall_time", "ns"),
+        (2, "Integral", "Pulse integral (ADC #times ns)", "integral", "keV"),
     )
     for channel in (0, 1):
         rows = [
@@ -440,9 +459,10 @@ def plot_waveform_features(
             if channel == 0
             else ROOT.TColor.GetColor("#F4A6A0")
         )
-        for column, title, x_title, name in quantities:
+        for column, title, x_title, name, unit in quantities:
             data = np.ascontiguousarray(values[:, column], dtype=np.float64)
-            if column == 2 and energy_scale and channel in energy_scale:
+            calibrated = column == 2 and energy_scale and channel in energy_scale
+            if calibrated:
                 scale, offset = energy_scale[channel]
                 data = data * scale + offset
                 x_title = "Pulse integral (keV)"
@@ -480,12 +500,87 @@ def plot_waveform_features(
             histogram.GetXaxis().SetLabelSize(0.040)
             histogram.GetYaxis().SetLabelSize(0.040)
             histogram.Draw("hist")
+
+            fit_range = None
+            if fit_ranges and name in fit_ranges:
+                if name != "integral" or calibrated:
+                    fit_range = fit_ranges[name]
+            if fit_range:
+                low_fit = max(
+                    float(fit_range[0]), histogram.GetXaxis().GetXmin()
+                )
+                high_fit = min(
+                    float(fit_range[1]), histogram.GetXaxis().GetXmax()
+                )
+                if high_fit > low_fit:
+                    low_bin = histogram.GetXaxis().FindBin(low_fit)
+                    high_bin = histogram.GetXaxis().FindBin(high_fit)
+                    peak_bin = max(
+                        range(low_bin, high_bin + 1),
+                        key=histogram.GetBinContent,
+                    )
+                    amplitude = histogram.GetBinContent(peak_bin)
+                    function = ROOT.TF1(
+                        f"f_{name}_{channel}", "gaus", low_fit, high_fit
+                    )
+                    function.SetParameter(0, amplitude)
+                    function.SetParameter(1, histogram.GetBinCenter(peak_bin))
+                    function.SetParameter(2, (high_fit - low_fit) / 6.0)
+                    function.SetParLimits(0, 0.0, max(amplitude, 1.0) * 10.0)
+                    function.SetParLimits(
+                        2, 1e-6, high_fit - low_fit
+                    )
+                    histogram.Fit(function, "RSQ", "", low_fit, high_fit)
+                    mean = float(function.GetParameter(1))
+                    mean_error = float(function.GetParError(1))
+                    sigma = float(function.GetParameter(2))
+                    sigma_error = float(function.GetParError(2))
+                    ndf = int(function.GetNDF())
+                    chi2_ndf = (
+                        float(function.GetChisquare() / ndf) if ndf > 0 else None
+                    )
+                    if (
+                        np.isfinite(mean)
+                        and np.isfinite(sigma)
+                        and sigma > 0.0
+                        and low_fit < mean < high_fit
+                    ):
+                        function.SetLineColor(ROOT.kBlack)
+                        function.SetLineWidth(4)
+                        function.Draw("same")
+                        box = ROOT.TPaveText(0.52, 0.70, 0.93, 0.89, "NDC")
+                        box.SetBorderSize(0)
+                        box.SetFillStyle(1001)
+                        box.SetFillColorAlpha(ROOT.kWhite, 0.85)
+                        box.SetTextAlign(12)
+                        box.SetTextFont(42)
+                        box.SetTextSize(0.034)
+                        box.AddText("Gaussian fit")
+                        box.AddText(
+                            f"#mu = {mean:.3f} #pm {mean_error:.3f} {unit}"
+                        )
+                        box.AddText(
+                            f"#sigma = {sigma:.3f} #pm {sigma_error:.3f} {unit}"
+                        )
+                        box.Draw()
+                        results.setdefault(name, {})[
+                            f"det{channel + 1}"
+                        ] = {
+                            "mean": mean,
+                            "mean_error": mean_error,
+                            "sigma": sigma,
+                            "sigma_error": sigma_error,
+                            "chi2_ndf": chi2_ndf,
+                        }
+
             canvas.SetGridx()
             canvas.SetGridy()
             canvas.Modified()
             canvas.Update()
             canvas.SaveAs(str(output / f"{name}_det{channel + 1}.png"))
             canvas.Close()
+
+    return results
 
 
 def plot_waveform_density(
@@ -1145,6 +1240,7 @@ def run(config: dict[str, Any]) -> dict[str, Any]:
             for channel, (slope, intercept) in calibration.items()
         }
 
+    feature_fits: dict[str, dict[str, dict[str, float | None]]] = {}
     if config["plot"]["enabled"]:
         for old in output.glob("*.png"):
             old.unlink()
@@ -1189,7 +1285,7 @@ def run(config: dict[str, Any]) -> dict[str, Any]:
             amplitude_bins=cfd["density_amplitude_bins"],
             amplitude_max=cfd["density_amplitude_max"],
         )
-        plot_waveform_features(
+        feature_fits = plot_waveform_features(
             {
                 0: features_first,
                 1: features_second,
@@ -1198,6 +1294,7 @@ def run(config: dict[str, Any]) -> dict[str, Any]:
             config["plot"],
             cfd["feature_bins"],
             energy_scale,
+            cfd["feature_fits"],
         )
         if histogram is not None and function is not None:
             chi2_ndf = (
@@ -1232,6 +1329,7 @@ def run(config: dict[str, Any]) -> dict[str, Any]:
             "channel0": _amplitude_stats(amplitudes_first),
             "channel1": _amplitude_stats(amplitudes_second),
         },
+        "feature_fits": feature_fits,
         "scan": [
             {
                 "delay": entry["delay"],
