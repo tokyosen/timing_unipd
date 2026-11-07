@@ -12,6 +12,7 @@
     "width": 1600,
     "height": 1000
   },
+  "energy_calibration": "../output/energy_scan/energy_scan.json",
   "cfd": {
     "channels": [
       0,
@@ -128,6 +129,9 @@
     "bins": 200,
     "min_amplitude": 50.0,
     "amplitude_bins": 60,
-    "feature_bins": 60
+    "feature_bins": 60,
+    "density_time_bins": 600,
+    "density_amplitude_bins": 400,
+    "density_amplitude_max": 1000.0
   }
 }

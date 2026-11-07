@@ -71,6 +71,9 @@ def load_config(path: str | Path) -> tuple[dict[str, Any], Path]:
     cfd.setdefault("min_amplitude", 50.0)
     cfd.setdefault("amplitude_bins", 60)
     cfd.setdefault("feature_bins", 60)
+    cfd.setdefault("density_time_bins", 600)
+    cfd.setdefault("density_amplitude_bins", 400)
+    cfd.setdefault("density_amplitude_max", 1000.0)
 
     channels = cfd["channels"]
     if not isinstance(channels, list) or len(channels) != 2:
@@ -99,6 +102,9 @@ def load_config(path: str | Path) -> tuple[dict[str, Any], Path]:
         "min_amplitude",
         "amplitude_bins",
         "feature_bins",
+        "density_time_bins",
+        "density_amplitude_bins",
+        "density_amplitude_max",
     ):
         if key in (
             "baseline_samples",
@@ -106,10 +112,40 @@ def load_config(path: str | Path) -> tuple[dict[str, Any], Path]:
             "bins",
             "amplitude_bins",
             "feature_bins",
+            "density_time_bins",
+            "density_amplitude_bins",
         ):
             cfd[key] = int(cfd[key])
         else:
             cfd[key] = float(cfd[key])
+
+    calibration_source = config.get("energy_calibration")
+    if calibration_source:
+        calibration_path = _resolve(calibration_source, base)
+        if not calibration_path.is_file():
+            raise CfdError(
+                f"Energy calibration file not found: {calibration_path}"
+            )
+        try:
+            calibration = json.loads(
+                calibration_path.read_text(encoding="utf-8")
+            )
+        except json.JSONDecodeError as exc:
+            raise CfdError(
+                f"Invalid JSON in {calibration_path}: {exc.msg}"
+            ) from exc
+        entries = calibration.get("energy_calibration")
+        if not isinstance(entries, list):
+            raise CfdError(
+                f'Missing "energy_calibration" array in {calibration_path}'
+            )
+        calibration_values = {}
+        for entry in entries:
+            calibration_values[int(entry["channel"])] = (
+                float(entry["slope"]),
+                float(entry["intercept"]),
+            )
+        config["energy_calibration"] = calibration_values
 
     return config, config_path
 
@@ -295,6 +331,38 @@ def waveform_features(
     return rise, fall, integral
 
 
+def integral_energy_factors(
+    waveforms: Waveforms,
+    channels: list[int],
+    min_amplitude: float,
+    sample_events: int = 20000,
+) -> dict[int, float]:
+    ratios: dict[int, list[float]] = {channel: [] for channel in channels}
+    tree = waveforms.tree
+    collected = 0
+    for entry in range(int(tree.GetEntries())):
+        if collected >= sample_events:
+            break
+        tree.GetEntry(entry)
+        channel = int(tree.Channel)
+        if channel not in ratios:
+            continue
+        energy = float(tree.Energy)
+        signal = waveforms.current_signal()
+        peak = int(np.argmax(signal))
+        if float(signal[peak]) < min_amplitude or energy <= 0:
+            continue
+        integral = float(signal[max(0, peak - 200) : peak + 1500].sum())
+        if integral <= 0:
+            continue
+        ratios[channel].append(energy / integral)
+        collected += 1
+    return {
+        channel: float(np.median(values)) if values else 1.0
+        for channel, values in ratios.items()
+    }
+
+
 def sequential_time_differences(
     waveforms: Waveforms,
     delay: float,
@@ -344,6 +412,7 @@ def plot_waveform_features(
     output: Path,
     config: dict[str, Any],
     bins: int = 60,
+    energy_scale: dict[int, tuple[float, float]] | None = None,
 ) -> None:
     from plot import apply_style
 
@@ -373,6 +442,10 @@ def plot_waveform_features(
         )
         for column, title, x_title, name in quantities:
             data = np.ascontiguousarray(values[:, column], dtype=np.float64)
+            if column == 2 and energy_scale and channel in energy_scale:
+                scale, offset = energy_scale[channel]
+                data = data * scale + offset
+                x_title = "Pulse integral (keV)"
             limit = float(np.percentile(data, 99.5) * 1.15)
             if limit <= 0:
                 continue
@@ -412,6 +485,95 @@ def plot_waveform_features(
             canvas.Modified()
             canvas.Update()
             canvas.SaveAs(str(output / f"{name}_det{channel + 1}.png"))
+            canvas.Close()
+
+
+def plot_waveform_density(
+    waveforms: Waveforms,
+    output: Path,
+    config: dict[str, Any],
+    min_amplitude: float = 50.0,
+    window: tuple[float, float] = (-100.0, 300.0),
+    time_bins: int = 600,
+    amplitude_bins: int = 400,
+    amplitude_max: float = 1000.0,
+) -> None:
+    from plot import apply_style
+
+    low, high = int(window[0]), int(window[1])
+    offsets = np.arange(low, high + 1, dtype=np.float64)
+    weights = np.ones(offsets.size, dtype=np.float64)
+    histograms = {}
+    amplitudes = {0: [], 1: []}
+    for channel in (0, 1):
+        histogram = ROOT.TH2D(
+            f"h_wave_density_{channel}",
+            f"Waveform density - Detector {channel + 1}",
+            time_bins,
+            low,
+            high,
+            amplitude_bins,
+            -20.0,
+            amplitude_max,
+        )
+        histogram.SetDirectory(0)
+        histograms[channel] = histogram
+
+    tree = waveforms.tree
+    for entry in range(int(tree.GetEntries())):
+        tree.GetEntry(entry)
+        channel = int(tree.Channel)
+        if channel not in histograms:
+            continue
+        signal = waveforms.current_signal()
+        peak = int(np.argmax(signal))
+        amplitude = float(signal[peak])
+        if amplitude < min_amplitude:
+            continue
+        indices = np.arange(low, high + 1) + peak
+        if indices[0] < 0 or indices[-1] >= signal.size:
+            continue
+        values = np.ascontiguousarray(signal[indices], dtype=np.float64)
+        histograms[channel].FillN(offsets.size, offsets, values, weights)
+        amplitudes[channel].append(amplitude)
+
+    for channel in (0, 1):
+        histogram = histograms[channel]
+        if histogram.GetEntries() == 0:
+            continue
+        display_max = float(
+            np.percentile(amplitudes[channel], 99.5) * 1.08
+        )
+        histogram.Smooth(1)
+        histogram.GetYaxis().SetRangeUser(-20.0, display_max)
+        apply_style()
+        for log_z, suffix in ((False, ""), (True, "_log")):
+            canvas = ROOT.TCanvas(
+                f"c_wave_density_{channel}{suffix}",
+                f"Waveform density detector {channel + 1}",
+                config["width"],
+                config["height"],
+            )
+            canvas.SetMargin(0.14, 0.14, 0.13, 0.09)
+            canvas.SetTicks(1, 1)
+            histogram.GetXaxis().SetTitle("Time relative to peak (ns)")
+            histogram.GetYaxis().SetTitle("Amplitude (ADC counts)")
+            histogram.GetZaxis().SetTitle("Entries")
+            histogram.GetXaxis().SetTitleSize(0.045)
+            histogram.GetYaxis().SetTitleSize(0.045)
+            histogram.GetZaxis().SetTitleSize(0.045)
+            histogram.GetXaxis().SetLabelSize(0.040)
+            histogram.GetYaxis().SetLabelSize(0.040)
+            histogram.GetZaxis().SetLabelSize(0.040)
+            if log_z:
+                histogram.SetMinimum(1.0)
+                canvas.SetLogz()
+            histogram.Draw("COLZ")
+            canvas.Modified()
+            canvas.Update()
+            canvas.SaveAs(
+                str(output / f"waveform_density_det{channel + 1}{suffix}.png")
+            )
             canvas.Close()
 
 
@@ -972,6 +1134,17 @@ def run(config: dict[str, Any]) -> dict[str, Any]:
     output = config["output"]
     output.mkdir(parents=True, exist_ok=True)
 
+    energy_scale = None
+    calibration = config.get("energy_calibration")
+    if calibration:
+        factors = integral_energy_factors(
+            waveforms, cfd["channels"], cfd["min_amplitude"]
+        )
+        energy_scale = {
+            channel: (slope * factors[channel], intercept)
+            for channel, (slope, intercept) in calibration.items()
+        }
+
     if config["plot"]["enabled"]:
         for old in output.glob("*.png"):
             old.unlink()
@@ -1007,6 +1180,15 @@ def run(config: dict[str, Any]) -> dict[str, Any]:
             config["plot"],
             cfd["amplitude_bins"],
         )
+        plot_waveform_density(
+            waveforms,
+            output,
+            config["plot"],
+            cfd["min_amplitude"],
+            time_bins=cfd["density_time_bins"],
+            amplitude_bins=cfd["density_amplitude_bins"],
+            amplitude_max=cfd["density_amplitude_max"],
+        )
         plot_waveform_features(
             {
                 0: features_first,
@@ -1015,6 +1197,7 @@ def run(config: dict[str, Any]) -> dict[str, Any]:
             output,
             config["plot"],
             cfd["feature_bins"],
+            energy_scale,
         )
         if histogram is not None and function is not None:
             chi2_ndf = (
