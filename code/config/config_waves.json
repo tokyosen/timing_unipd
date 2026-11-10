@@ -124,6 +124,9 @@
       0.9
     ],
     "scan_events": 5000,
+    "refine_events": 30000,
+    "refine_half_range": 1.0,
+    "refine_step": 0.1,
     "fit_half_width": 3.0,
     "hist_half_width": 8.0,
     "bins": 200,

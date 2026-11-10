@@ -12,7 +12,8 @@
     "tag": "walk",
     "name": "Time resolution (FWHM) vs delay",
     "x_title": "Delay (ns)",
-    "y_title": "FWHM (ADC channel)",
+    "y_title": "FWHM (ns)",
+    "y_calibration": "../output/calibration_tac/tac_ns/calibration.json",
     "measure": "fwhm",
     "linear": false,
     "points": [

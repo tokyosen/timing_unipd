@@ -18,7 +18,7 @@
     {
       "name": "Energy",
       "expression": "Energy",
-      "bins": 1200,
+      "bins": 700,
       "range": [
         0,
         700

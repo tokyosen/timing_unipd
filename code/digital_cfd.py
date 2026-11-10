@@ -91,6 +91,9 @@ def load_config(path: str | Path) -> tuple[dict[str, Any], Path]:
     cfd.setdefault("density_time_bins", 600)
     cfd.setdefault("density_amplitude_bins", 400)
     cfd.setdefault("density_amplitude_max", 1000.0)
+    cfd.setdefault("refine_events", 30000)
+    cfd.setdefault("refine_half_range", 1.0)
+    cfd.setdefault("refine_step", 0.1)
 
     channels = cfd["channels"]
     if not isinstance(channels, list) or len(channels) != 2:
@@ -122,6 +125,9 @@ def load_config(path: str | Path) -> tuple[dict[str, Any], Path]:
         "density_time_bins",
         "density_amplitude_bins",
         "density_amplitude_max",
+        "refine_events",
+        "refine_half_range",
+        "refine_step",
     ):
         if key in (
             "baseline_samples",
@@ -131,6 +137,7 @@ def load_config(path: str | Path) -> tuple[dict[str, Any], Path]:
             "feature_bins",
             "density_time_bins",
             "density_amplitude_bins",
+            "refine_events",
         ):
             cfd[key] = int(cfd[key])
         else:
@@ -958,6 +965,71 @@ def scan(
     return best[0], best[1], best[2], results
 
 
+def refine_scan(
+    waveforms: Waveforms,
+    fraction: float,
+    delay: float,
+    cfd: dict[str, Any],
+) -> tuple[float, float, list[dict[str, Any]]]:
+    entries = waveforms.pairs[: cfd["refine_events"]]
+    cache = [
+        (waveforms.signal(first), waveforms.signal(second))
+        for _, first, second in entries
+    ]
+    lower = max(1.0, delay - cfd["refine_half_range"])
+    upper = delay + cfd["refine_half_range"]
+    step = cfd["refine_step"]
+    delays = np.round(np.arange(lower, upper + 0.5 * step, step), 3)
+    results = []
+    for value in delays:
+        values = time_differences(
+            waveforms,
+            float(value),
+            fraction,
+            cfd["min_amplitude"],
+            entries,
+            cache,
+        )
+        if values.size < 100:
+            continue
+        center = float(np.median(values))
+        fwhm, fwhm_error, _, _ = gaussian_width(
+            values,
+            center,
+            cfd["hist_half_width"],
+            cfd["fit_half_width"],
+            cfd["bins"],
+            f"h_refine_{str(value).replace('.', '_')}",
+        )
+        if not np.isfinite(fwhm) or fwhm < 0.15:
+            continue
+        results.append(
+            {
+                "delay": float(value),
+                "center": center,
+                "fwhm": fwhm,
+                "fwhm_error": fwhm_error,
+            }
+        )
+
+    if not results:
+        return delay, float("inf"), results
+
+    results.sort(key=lambda entry: entry["delay"])
+    best_index = int(np.argmin([entry["fwhm"] for entry in results]))
+    best = results[best_index]
+    neighbors = results[max(0, best_index - 2) : best_index + 3]
+    if len(neighbors) >= 3:
+        x = np.asarray([entry["delay"] for entry in neighbors])
+        y = np.asarray([entry["fwhm"] for entry in neighbors])
+        coefficients = np.polyfit(x, y, 2)
+        if coefficients[0] > 0:
+            vertex = -coefficients[1] / (2.0 * coefficients[0])
+            if x[0] <= vertex <= x[-1]:
+                return float(vertex), float(best["fwhm"]), results
+    return float(best["delay"]), float(best["fwhm"]), results
+
+
 def _finite(value: float) -> float | None:
     return float(value) if np.isfinite(value) else None
 
@@ -1178,6 +1250,13 @@ def run(config: dict[str, Any]) -> dict[str, Any]:
     if not np.isfinite(fwhm):
         raise CfdError("CFD scan did not converge.")
 
+    refined_delay, refined_fwhm, refinement = refine_scan(
+        waveforms, fraction, delay, cfd
+    )
+    if np.isfinite(refined_fwhm):
+        delay = refined_delay
+        fwhm = refined_fwhm
+
     (
         values,
         amplitudes_first,
@@ -1325,6 +1404,7 @@ def run(config: dict[str, Any]) -> dict[str, Any]:
         "sigma_error": sigma_error,
         "fwhm": fwhm,
         "fwhm_error": fwhm_error,
+        "refinement": refinement,
         "amplitude": {
             "channel0": _amplitude_stats(amplitudes_first),
             "channel1": _amplitude_stats(amplitudes_second),

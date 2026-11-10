@@ -148,6 +148,27 @@ def load_config(
             f'"calibration.{tag}.points" needs at least two points.'
         )
 
+    y_calibration = calibration.get("y_calibration")
+    if y_calibration is not None:
+        y_path = _resolve(y_calibration, base)
+        if not y_path.is_file():
+            raise CalibrationError(
+                f"Y-axis calibration not found: {y_path}"
+            )
+        try:
+            y_data = json.loads(y_path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as exc:
+            raise CalibrationError(
+                f"Invalid JSON in {y_path}: {exc.msg}"
+            ) from exc
+        y_slope = float(y_data["slope"])
+        if y_slope <= 0:
+            raise CalibrationError(
+                f"Y-axis calibration slope must be positive: {y_path}"
+            )
+        calibration["y_scale"] = 1.0 / y_slope
+        calibration["y_calibration"] = str(y_path)
+
     for index, point in enumerate(points):
         where = f"calibration.{tag}.points[{index}]"
         if not isinstance(point, dict):
@@ -430,6 +451,12 @@ def run(config: dict[str, Any]) -> dict[str, Any]:
         for point in calibration["points"]
     ]
 
+    y_scale = calibration.get("y_scale")
+    if y_scale is not None:
+        for point in points:
+            point["y"] *= y_scale
+            point["y_error"] *= y_scale
+
     graph = make_graph(points)
     function = linear_fit(graph, points) if calibration["linear"] else None
 
@@ -444,6 +471,7 @@ def run(config: dict[str, Any]) -> dict[str, Any]:
         "linear": calibration["linear"],
         "x_title": calibration["x_title"],
         "y_title": calibration["y_title"],
+        "y_scale": calibration.get("y_scale"),
         "points": points,
     }
 

@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-05T07:58:27+00:00",
+  "generated": "2026-11-09T21:01:40+00:00",
   "config_file": "/home/senzhao/Desktop/code/Ms_unipd/code/config/config_lab_energy_D1.json",
   "input": {
     "path": "/home/senzhao/Desktop/code/Ms_unipd/data_timing/lab_data/42energyday2D1",
@@ -17,7 +17,7 @@
             {
               "name": "Energy",
               "expression": "Energy",
-              "bins": 1200,
+              "bins": 700,
               "range": [
                 0.0,
                 700.0
@@ -33,28 +33,28 @@
                   ],
                   "valid": true,
                   "status": 0,
-                  "chi2": 82.00869049207648,
+                  "chi2": 76.63980241607314,
                   "ndf": 52,
-                  "chi2_ndf": 1.5770902017707016,
-                  "p_value": 0.004991737130477784,
+                  "chi2_ndf": 1.4738423541552526,
+                  "p_value": 0.014721310682622947,
                   "parameters": [
                     {
                       "index": 0,
                       "name": "Constant",
-                      "value": 4171.301676908226,
-                      "error": 12.387852587023477
+                      "value": 4171.316703180146,
+                      "error": 12.307848779278414
                     },
                     {
                       "index": 1,
                       "name": "mean",
-                      "value": 93.41590472190292,
-                      "error": 0.23172362243458622
+                      "value": 93.89999770094956,
+                      "error": 0.23150788161656521
                     },
                     {
                       "index": 2,
                       "name": "sigma",
-                      "value": 27.12803412591025,
-                      "error": 0.2289628114445179
+                      "value": 27.1461891562477,
+                      "error": 0.22834004773471683
                     }
                   ]
                 },
@@ -67,28 +67,28 @@
                   ],
                   "valid": true,
                   "status": 0,
-                  "chi2": 116.41527549898146,
-                  "ndf": 98,
-                  "chi2_ndf": 1.1879109744794025,
-                  "p_value": 0.09888661050173932,
+                  "chi2": 108.34223191738663,
+                  "ndf": 97,
+                  "chi2_ndf": 1.1169302259524394,
+                  "p_value": 0.2026970163756251,
                   "parameters": [
                     {
                       "index": 0,
                       "name": "Constant",
-                      "value": 717.109710721454,
-                      "error": 3.7941136871746752
+                      "value": 716.1925056421977,
+                      "error": 3.8069609105414783
                     },
                     {
                       "index": 1,
                       "name": "mean",
-                      "value": 327.28908764134655,
-                      "error": 0.594666306081308
+                      "value": 327.598135920805,
+                      "error": 0.6077237243720788
                     },
                     {
                       "index": 2,
                       "name": "sigma",
-                      "value": 45.32109177720774,
-                      "error": 0.5701527506036115
+                      "value": 45.64946434293379,
+                      "error": 0.5940115272003261
                     }
                   ]
                 }
@@ -124,7 +124,7 @@
             {
               "name": "Energy",
               "expression": "Energy",
-              "bins": 1200,
+              "bins": 700,
               "range": [
                 0.0,
                 700.0
@@ -162,7 +162,7 @@
             {
               "name": "Energy",
               "expression": "Energy",
-              "bins": 1200,
+              "bins": 700,
               "range": [
                 0.0,
                 700.0

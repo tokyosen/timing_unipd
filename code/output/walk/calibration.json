@@ -5,7 +5,8 @@
   "error_source": "sigma_error",
   "linear": false,
   "x_title": "Delay (ns)",
-  "y_title": "FWHM (ADC channel)",
+  "y_title": "FWHM (ns)",
+  "y_scale": 0.012282754461628225,
   "points": [
     {
       "results": "/home/senzhao/Desktop/code/Ms_unipd/code/output/walk_2ns/4400walk2ns_1/results.json",
@@ -15,8 +16,8 @@
       "histogram": "Energy",
       "fit": "TAC",
       "x": 2.0,
-      "y": 137.2905217518908,
-      "y_error": 1.8818283134952467,
+      "y": 1.6863057685873035,
+      "y_error": 0.02311403511360206,
       "chi2_ndf": 7.686960358047264
     },
     {
@@ -27,8 +28,8 @@
       "histogram": "Energy",
       "fit": "TAC",
       "x": 3.0,
-      "y": 131.50461415820035,
-      "y_error": 1.0603496379583346,
+      "y": 1.6152388862763336,
+      "y_error": 0.013024014246518608,
       "chi2_ndf": 20.087530944415573
     },
     {
@@ -39,8 +40,8 @@
       "histogram": "Energy",
       "fit": "TAC",
       "x": 4.0,
-      "y": 84.83265228142999,
-      "y_error": 0.5973589938880421,
+      "y": 1.04197863830149,
+      "y_error": 0.007337213847372097,
       "chi2_ndf": 40.16254883575624
     },
     {
@@ -51,8 +52,8 @@
       "histogram": "Energy",
       "fit": "TAC",
       "x": 5.0,
-      "y": 103.0503505582956,
-      "y_error": 2.711018771044037,
+      "y": 1.265742153092258,
+      "y_error": 0.033298777905599014,
       "chi2_ndf": 6.157951941424155
     }
   ]
